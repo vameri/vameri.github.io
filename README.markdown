@@ -1,4 +1,4 @@
-# Pesonal Web Site - f0rmig4
+# Pesonal Web Site - vameri
 
 ## Description
 This is my personal site, I intend to share it with my projects and work experiences.
@@ -10,8 +10,8 @@ This site:
 - Static, faster and optimized.
 
 ## Run 
-git clone git@github.com:f0rmig4/f0rmig4.github.io.git
-cd f0rmig4.github.io.git
+git clone git@github.com:vameri/vameri.github.io.git
+cd vameri.github.io.git
 bundle exec jekyll serve
 
 ## Run Grunt
