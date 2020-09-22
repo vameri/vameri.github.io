@@ -1,0 +1,11 @@
+---
+layout: default
+title: Blog
+description: Blog do f0rmig4. Engenheiro de software, artesão de bits, pai da Luz, apaixonado por games e por todos outros cacarecos tecnológicos.
+---
+{% for post in site.posts %}
+	<article class="list">
+		<h2><a href="{{ post.url }}" alt="">{{ post.title }}</a></h2>
+		<p>{{post.description}}...</p>
+	</article>
+{% endfor %}

@@ -1,0 +1,17 @@
+permalink: /blog/:title
+
+# Themes are encouraged to use these universal variables
+# so be sure to set them if your theme uses them.
+#
+title : f0rmig4
+description: Site do f0rmig4. Engenheiro de software, artesão de bits, pai da Luz, apaixonado por games e por todos outros cacarecos tecnológicos.
+keywords: site f0rmig4, engenheiro de software, artesão de bits, desenvolvedor web
+author :
+  name : f0rmig4
+  email : f0rmig4@protonmail.com
+  github : https://github.com/f0rmig4
+  twitter: https://twitter.com/f0rmig4
+  facebook: http://www.facebook.com/f0rmig4
+  linkdin: http://br.linkedin.com/in/f0rmig4
+
+production_url : http://f0rmig4.github.io/
