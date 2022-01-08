@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
 body{font:16px "Helvetica Neue",Helvetica,Arial,sans-serif;color:#fff; background-color: #343434;
-font-weight:300}h1,h2,h3,h4,h5,h6{color:#222;margin:0 0 20px}p,ul,ol,table,pre,dl{margin:0 0 20px}h1,h2,h3,h5{line-height:1.1;
+font-weight:300}h1,h2,h3,h4,h5,h6{color:#fff;
+margin:0 0 20px}p,ul,ol,table,pre,dl{margin:0 0 20px}h1,h2,h3,h5{line-height:1.1;
 text-transform:uppercase}h1{font-size:28px}h2{color:#393939}h3,h4,h5,h6{color:#494949}a{color:#39c;
 text-decoration:none;
 outline:0;
