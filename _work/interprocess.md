@@ -10,6 +10,12 @@ images:
   - /assets/images/work/interprocess/1.png
 caption: "Tela do prontuário — protótipo de alta fidelidade no Figma."
 description: "image.png"
+mockup:
+  type: laptop
+  bg: "#DCE7F2"
+  screens:
+    - /assets/images/work/interprocess/1.png
+  position: "50% 0%"
 ---
 
 image.png

@@ -1,0 +1,19 @@
+{%- assign m = include.mockup -%}
+{%- assign pos = m.position | default: "50% 0%" -%}
+<div class="mockup mockup--{{ m.type }}{% if m.type == 'phones' %} mockup--n{{ m.screens.size }}{% endif %}" aria-hidden="true">
+  {%- if m.type == "phones" -%}
+    {%- for screen in m.screens %}
+    <div class="device-phone"><img src="{{ screen }}" alt="" loading="lazy"></div>
+    {%- endfor -%}
+  {%- elsif m.type == "laptop" %}
+    <div class="device-laptop">
+      <div class="device-laptop__screen"><img src="{{ m.screens[0] }}" alt="" loading="lazy" style="object-position: {{ pos }};"></div>
+      <div class="device-laptop__base"></div>
+    </div>
+  {%- elsif m.type == "browser" %}
+    <div class="device-browser">
+      <div class="device-browser__bar"><i></i><i></i><i></i></div>
+      <img src="{{ m.screens[0] }}" alt="" loading="lazy" style="object-position: {{ pos }};">
+    </div>
+  {%- endif %}
+</div>

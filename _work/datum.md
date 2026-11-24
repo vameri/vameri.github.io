@@ -11,6 +11,13 @@ images:
 link: https://play.google.com/store/apps/details?id=com.sulgas.digital&hl=pt_BR&gl=US
 link_label: "Google Play"
 description: "Atuei como UX Designer na Datum TI, participando de projetos digitais para plataformas web e aplicativos móveis, com destaque para a transformação digital da Sulgás. Fui responsável pela concepção da experiência dos usuários, arquitetura da informação e desenho das interfaces do portal e dos aplicat"
+mockup:
+  type: phones
+  bg: "#E4F1EA"
+  screens:
+    - /assets/images/work/datum/m1.jpg
+    - /assets/images/work/datum/m2.jpg
+    - /assets/images/work/datum/m3.jpg
 ---
 
 Atuei como UX Designer na Datum TI, participando de projetos digitais para plataformas web e aplicativos móveis, com destaque para a transformação digital da Sulgás. Fui responsável pela concepção da experiência dos usuários, arquitetura da informação e desenho das interfaces do portal e dos aplicativos Android e iOS, contribuindo para a modernização dos canais digitais da companhia.

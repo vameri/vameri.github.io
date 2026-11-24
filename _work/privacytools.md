@@ -10,6 +10,12 @@ images:
   - /assets/images/work/privacytools/1.png
   - /assets/images/work/privacytools/2.png
 description: "Atuei como UX Designer e Product Designer na startup PrivacyTools, liderando a concepção da identidade visual, experiência do usuário e prototipação do MVP da plataforma. Participei desde a fase inicial de definição do produto, auxiliando na transformação da visão de negócio em uma solução digital v"
+mockup:
+  type: laptop
+  bg: "#E2EFF5"
+  screens:
+    - /assets/images/work/privacytools/1.png
+  position: "0% 0%"
 ---
 
 Atuei como UX Designer e Product Designer na startup PrivacyTools, liderando a concepção da identidade visual, experiência do usuário e prototipação do MVP da plataforma. Participei desde a fase inicial de definição do produto, auxiliando na transformação da visão de negócio em uma solução digital voltada à gestão de privacidade, governança de dados e adequação à LGPD.

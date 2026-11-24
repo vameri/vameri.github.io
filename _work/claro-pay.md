@@ -12,6 +12,12 @@ images:
   - /assets/images/work/claro-pay/3.png
   - /assets/images/work/claro-pay/4.png
 description: "Atuação como Product Designer na evolução do Super App Claro Pay, participando da modernização da plataforma e da construção de uma nova experiência digital para milhões de clientes da Claro. Trabalhei em iniciativas voltadas para produtos financeiros e serviços digitais, atuando desde a fase de des"
+mockup:
+  type: phones
+  bg: "#F6E1DC"
+  screens:
+    - /assets/images/work/claro-pay/m1.jpg
+    - /assets/images/work/claro-pay/m2.jpg
 ---
 
 Atuação como Product Designer na evolução do Super App Claro Pay, participando da modernização da plataforma e da construção de uma nova experiência digital para milhões de clientes da Claro. Trabalhei em iniciativas voltadas para produtos financeiros e serviços digitais, atuando desde a fase de descoberta até a entrega e validação das soluções.

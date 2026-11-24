@@ -9,6 +9,12 @@ cover_position: "0% 0%"
 images:
   - /assets/images/work/ubs/1.png
 description: "Atuei como UX Designer no projeto de modernização do BackOffice da Mesa de Operações do UBS Investment Bank, participando da migração de uma plataforma legada para uma solução web moderna voltada ao mercado de capitais, renda variável e mercado futuro. O projeto envolveu a transformação de processos"
+mockup:
+  type: browser
+  bg: "#E6E9EE"
+  screens:
+    - /assets/images/work/ubs/1.png
+  position: "0% 0%"
 ---
 
 Atuei como UX Designer no projeto de modernização do BackOffice da Mesa de Operações do UBS Investment Bank, participando da migração de uma plataforma legada para uma solução web moderna voltada ao mercado de capitais, renda variável e mercado futuro. O projeto envolveu a transformação de processos críticos utilizados diariamente por traders, operadores, analistas e equipes de suporte operacional.

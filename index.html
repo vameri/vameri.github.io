@@ -7,10 +7,13 @@ description: UX Designer and Front End Developer
 <div class="grid">
   {%- assign items = site.work | sort: "order" -%}
   {%- for item in items %}
-  <div class="asset{% unless item.cover %} no-image{% endunless %}">
-    <a href="{{ item.url }}" style="--tile: {{ item.color | default: '#e9e9e6' }};">
-      {%- if item.cover %}
-      <div class="asset-holder" style="background-image: url('{{ item.cover }}'); background-position: {{ item.cover_position | default: '50% 50%' }};" role="img" aria-label="{{ item.title }}"></div>
+  {%- assign tile = item.mockup.bg | default: item.color | default: '#e9e9e6' %}
+  <div class="asset{% unless item.cover or item.mockup %} no-image{% endunless %}">
+    <a href="{{ item.url }}" style="--tile: {{ tile }};" aria-label="{{ item.title }} — {{ item.role }}, {{ item.year }}">
+      {%- if item.mockup %}
+      {% include mockup.html mockup=item.mockup %}
+      {%- elsif item.cover %}
+      <div class="asset-holder" style="background-image: url('{{ item.cover }}'); background-position: {{ item.cover_position | default: '50% 50%' }};"></div>
       {%- endif %}
       <div class="title">{{ item.title }}<small>{{ item.role }} &middot; {{ item.year }}</small></div>
     </a>
