@@ -3,12 +3,12 @@ permalink: /blog/:title
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : vameri
-description: Product Designer, Desenvolvedor Fullstack, Scrum Master, Agilista, Product Engineer e Community Manager em Porto Alegre, RS.
-keywords: Vagner Ribas, vameri, Product Designer, UX Designer, Product Discovery, Design Systems, Figma, Desenvolvedor Fullstack, Scrum Master, Product Engineer, Porto Alegre
-author : 
-  name : vameri
-  email : vameri@pm.me
+title : Vagner Ribas
+description: Product Designer, Desenvolvedor Front End e Product Engineer especialista em IA em Porto Alegre, Brasil.
+keywords: Vagner Ribas, Product Designer, UX Designer, UI Designer, Desenvolvedor Front End, Front End Developer, Product Engineer, Especialista em IA, AI Product Designer, Design Systems, Product Discovery, React, Figma, Porto Alegre, Remoto
+author :
+  name : Vagner Ribas
+  email : vameri@gmail.com
   github : https://github.com/vameri
   linkdin: https://www.linkedin.com/in/vagneribas/
 

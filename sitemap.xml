@@ -1,0 +1,30 @@
+---
+layout: null
+sitemap: false
+---
+{%- assign base_url = site.production_url | append: "#" | replace: "/#", "" -%}
+{%- assign all = site.pages | concat: site.work -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{%- for p in all %}
+  {%- unless p.sitemap == false or p.noindex or p.layout == nil or p.layout == "null" %}
+  {%- assign last = p.url | split: "" | last %}
+  {%- unless last == "/" or p.url contains ".html" %}{% continue %}{% endunless %}
+  <url>
+    <loc>{{ base_url }}{{ p.url | replace: "index.html", "" }}</loc>
+    <lastmod>{{ site.time | date: "%Y-%m-%d" }}</lastmod>
+    <changefreq>{% if p.ref == "home" %}weekly{% else %}monthly{% endif %}</changefreq>
+    <priority>{% if p.ref == "home" %}1.0{% elsif p.ref == "about" %}0.9{% elsif p.collection == "work" %}0.8{% else %}0.6{% endif %}</priority>
+    {%- if p.ref %}
+    {%- assign alts = all | where: "ref", p.ref %}
+    {%- for a in alts %}
+    <xhtml:link rel="alternate" hreflang="{{ site.data.i18n[a.lang].html_lang }}" href="{{ base_url }}{{ a.url }}"/>
+    {%- if a.lang == site.default_lang %}
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ base_url }}{{ a.url }}"/>
+    {%- endif %}
+    {%- endfor %}
+    {%- endif %}
+  </url>
+  {%- endunless %}
+{%- endfor %}
+</urlset>

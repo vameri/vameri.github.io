@@ -732,3 +732,16 @@ article.list p { margin: 0; }
   .post-header h1 { font-size: 28px; }
   .post-content { font-size: 17px; }
 }
+
+/* Home hero */
+.hero { max-width: 980px; padding: 30px 0 60px; }
+.hero__title { margin: 0 0 20px; font-size: 44px; font-weight: 900; line-height: 1.2; }
+.hero__text { max-width: 760px; margin: 0 0 24px; font-size: 19px; color: var(--text); }
+.hero__links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; font-weight: 700; }
+.hero__links a { text-decoration: none; border-bottom: 2px solid var(--heading); padding-bottom: 2px; }
+.hero__links a:hover { border-color: var(--accent); }
+@media (max-width: 767px) {
+  .hero { padding: 10px 0 36px; }
+  .hero__title { font-size: 28px; }
+  .hero__text { font-size: 17px; }
+}

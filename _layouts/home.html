@@ -4,6 +4,17 @@ section: work
 ---
 {%- assign base_items = site.work | where: "lang", "pt" | sort: "order" -%}
 {%- assign local_items = site.work | where: "lang", page.lang -%}
+{%- assign t = site.data.i18n[page.lang] -%}
+<section class="hero">
+  <h1 class="hero__title">{{ t.hero_title }}</h1>
+  <p class="hero__text">{{ t.hero_text }}</p>
+  <p class="hero__links">
+    <a href="{{ t.prefix }}/about/">{{ t.hero_about }} &rarr;</a>
+    <a href="/CV_Vagner_Ribas.pdf" download>{{ t.download_cv }}</a>
+    <a href="https://www.linkedin.com/in/vagneribas/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </p>
+</section>
+
 <div class="grid">
   {%- for base in base_items %}
   {%- assign item = local_items | where: "ref", base.ref | first | default: base %}

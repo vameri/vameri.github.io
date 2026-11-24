@@ -1,0 +1,54 @@
+# Data used for search engines (JSON-LD structured data).
+name: Vagner Ribas
+photo: /assets/images/vameri.jpg
+email: vameri@gmail.com
+city: Porto Alegre
+region: RS
+country: BR
+works_for: Interprocess Gemed — Tecnologia em Saúde
+alumni_of:
+  name: PUCRS — Pontifícia Universidade Católica do Rio Grande do Sul
+  url: https://www.pucrs.br
+same_as:
+  - https://www.linkedin.com/in/vagneribas/
+  - https://github.com/vameri
+  - https://medium.com/@vagneribas
+
+job_title:
+  pt: Product Designer, Desenvolvedor Front End e Product Engineer
+  en: Product Designer, Front End Developer and Product Engineer
+  es: Product Designer, Desarrollador Front End y Product Engineer
+
+occupations:
+  - { pt: Product Designer, en: Product Designer, es: Product Designer }
+  - { pt: UX/UI Designer, en: UX/UI Designer, es: UX/UI Designer }
+  - { pt: Desenvolvedor Front End, en: Front End Developer, es: Desarrollador Front End }
+  - { pt: Product Engineer, en: Product Engineer, es: Product Engineer }
+  - { pt: Especialista em IA para produtos digitais, en: AI Product Specialist, es: Especialista en IA para productos digitales }
+
+knows_about:
+  - Product Design
+  - UX Design
+  - UI Design
+  - User Experience Research
+  - Product Discovery
+  - Design Systems
+  - Information Architecture
+  - Prototyping
+  - Usability Testing
+  - Figma
+  - Front End Development
+  - React
+  - Next.js
+  - Angular
+  - Vue.js
+  - JavaScript
+  - HTML
+  - CSS
+  - Product Engineering
+  - Artificial Intelligence
+  - Generative AI
+  - AI-assisted Product Design
+  - Model Context Protocol (MCP)
+  - Scrum
+  - Agile Methodologies
