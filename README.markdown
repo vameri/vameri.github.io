@@ -1,31 +1,31 @@
-# Pesonal Web Site - vameri
+# vameri.github.io — Vagner Ribas
 
-## Description
-This is my personal site, I intend to share it with my projects and work experiences.
+Personal site and portfolio of **Vagner Ribas** — Product Designer, Front End Developer and Product Engineer specialized in AI.
 
-This site:
+Live: https://vameri.github.io (Portuguese, English and Spanish)
 
-- Responsive, Mobile friendly;
-- Based on Jekyll and HTML5;
-- Static, faster and optimized.
+## Stack
 
-## Run 
-git clone git@github.com:vameri/vameri.github.io.git
-cd vameri.github.io.git
-bundle exec jekyll serve
+- [Jekyll](https://jekyllrb.com/) on GitHub Pages, no plugins
+- Plain CSS (`assets/css/master.css`), no build step
 
-## Run Grunt
-nvm install v12.2.0
-npm install -g grunt-cli
-npm install
-grunt
+## Run locally
 
-## References and Further Reading
+```sh
+bundle install
+bundle exec jekyll serve --livereload
+```
 
-Jekyll's project home page:
+Open http://127.0.0.1:4000
 
-  https://github.com/mojombo/jekyll
+## Where things live
 
-The author of Jekyll is Tom Preston-Werner:
-
-  http://tom.preston-werner.com/
+| What | Where |
+|---|---|
+| Case studies (pt / en / es) | `_work/pt`, `_work/en`, `_work/es` — media and mockups only in `pt` |
+| Career history | `_data/experience.yml` |
+| Skills | `_data/skills.yml` |
+| Interface strings and SEO texts | `_data/i18n.yml` |
+| Structured data (SEO) | `_data/seo.yml`, `_includes/seo.html` |
+| Blog posts (from Medium) | `_posts` |
+| CV download | `CV_Vagner_Ribas.pdf` |

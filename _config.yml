@@ -1,8 +1,5 @@
 permalink: /blog/:title
 
-# Themes are encouraged to use these universal variables
-# so be sure to set them if your theme uses them.
-#
 title : Vagner Ribas
 description: Product Designer, Desenvolvedor Front End e Product Engineer especialista em IA em Porto Alegre, Brasil.
 keywords: Vagner Ribas, Product Designer, UX Designer, UI Designer, Desenvolvedor Front End, Front End Developer, Product Engineer, Especialista em IA, AI Product Designer, Design Systems, Product Discovery, React, Figma, Porto Alegre, Remoto
@@ -67,10 +64,6 @@ defaults:
       lang: pt
 
 exclude:
-  - node_modules
-  - package.json
-  - package-lock.json
-  - Gruntfile.js
   - Gemfile
   - Gemfile.lock
   - README.markdown
