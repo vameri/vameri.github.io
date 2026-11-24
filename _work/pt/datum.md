@@ -4,7 +4,7 @@ title: "Datum"
 headline: "Datum TI · Projeto Sulgás"
 role: "UX Designer"
 year: 2018
-order: 7
+order: 8
 cover: /assets/images/work/datum/1.png
 cover_position: "50% 50%"
 images:

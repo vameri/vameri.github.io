@@ -4,7 +4,7 @@ title: "PrivacyTools"
 headline: "Maven · PrivacyTools — MVP, marca e experiência"
 role: "UX Designer / Product Designer"
 year: 2019
-order: 6
+order: 7
 cover: /assets/images/work/privacytools/1.png
 cover_position: "0% 50%"
 images:

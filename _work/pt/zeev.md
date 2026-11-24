@@ -4,7 +4,7 @@ title: "Zeev"
 headline: "Zeev BPM · Plataforma de automação de processos"
 role: "UX Designer"
 year: 2021
-order: 5
+order: 6
 cover: /assets/images/work/zeev/1.png
 cover_position: "0% 0%"
 images:

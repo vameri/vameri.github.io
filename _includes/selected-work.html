@@ -4,7 +4,7 @@
   {%- for base in base_items %}
   {%- assign item = local_items | where: "ref", base.ref | first | default: base %}
   <li>
-    <span class="when">{{ base.year }}</span>
+    {% if base.year %}<span class="when">{{ base.year }}</span>{% endif %}
     <a class="what" href="{{ item.url }}">{{ item.title }}</a> &mdash; {{ item.role }}<br><small>{{ item.headline }}</small>
   </li>
   {%- endfor %}

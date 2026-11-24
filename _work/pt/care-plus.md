@@ -4,7 +4,7 @@ title: "Care Plus"
 headline: "Aplicativo Care Plus (Android e iOS) · CWI"
 role: "Product Designer e UX Designer"
 year: 2023
-order: 3
+order: 4
 cover: /assets/images/work/care-plus/2.png
 cover_position: "50% 50%"
 images:

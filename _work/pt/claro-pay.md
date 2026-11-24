@@ -4,7 +4,7 @@ title: "Claro Pay"
 headline: "Super App Claro Pay"
 role: "Product Designer"
 year: 2024
-order: 2
+order: 3
 cover: /assets/images/work/claro-pay/2.png
 cover_position: "50% 50%"
 images:

@@ -20,13 +20,13 @@ section: work
   {%- assign item = local_items | where: "ref", base.ref | first | default: base %}
   {%- assign tile = base.mockup.bg | default: '#e9e9e6' %}
   <div class="asset{% unless base.cover or base.mockup %} no-image{% endunless %}">
-    <a href="{{ item.url }}" style="--tile: {{ tile }};" aria-label="{{ item.title }} — {{ item.role }}, {{ base.year }}">
+    <a href="{{ item.url }}" style="--tile: {{ tile }};" aria-label="{{ item.title }} — {{ item.role }}{% if base.year %}, {{ base.year }}{% endif %}">
       {%- if base.mockup %}
       {% include mockup.html mockup=base.mockup %}
       {%- elsif base.cover %}
       <div class="asset-holder" style="background-image: url('{{ base.cover }}'); background-position: {{ base.cover_position | default: '50% 50%' }};"></div>
       {%- endif %}
-      <div class="title">{{ item.title }}<small>{{ item.role }} &middot; {{ base.year }}</small></div>
+      <div class="title">{{ item.title }}<small>{{ item.role }}{% if base.year %} &middot; {{ base.year }}{% endif %}</small></div>
     </a>
   </div>
   {%- endfor %}

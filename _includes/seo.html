@@ -148,7 +148,9 @@
           "url": "{{ page_url }}",
           "image": "{{ base_url }}{{ og_image }}",
           "inLanguage": "{{ t.html_lang }}",
+          {%- if base.year %}
           "dateCreated": "{{ base.year }}",
+          {%- endif %}
           "creator": {"@id": "{{ base_url }}/#person"},
           "author": {"@id": "{{ base_url }}/#person"},
           "keywords": {{ page.role | append: ", Product Design, UX Design, UI Design, Design System" | jsonify }}
