@@ -1,0 +1,28 @@
+{%- assign lang = page.lang | default: site.default_lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign jobs = site.data.experience -%}
+{%- if include.limit -%}{%- assign jobs = jobs | slice: 0, include.limit -%}{%- endif -%}
+<ul class="timeline experience">
+  {%- for job in jobs %}
+  <li>
+    <span class="what">{{ job.company }}</span>
+    {%- for role in job.roles %}
+    {%- assign title = role.title[lang] | default: role.title.pt -%}
+    {%- assign summary = role.summary[lang] | default: role.summary.pt -%}
+    {%- assign work_doc = nil -%}
+    {%- if role.work -%}{%- assign work_doc = site.work | where: "lang", lang | where: "ref", role.work | first -%}{%- endif %}
+    <div class="role">
+      <strong>{% if work_doc %}<a href="{{ work_doc.url }}">{{ title }}</a>{% else %}{{ title }}{% endif %}</strong>
+      <span class="when">
+        {%- include period.html date=role.start t=t -%}
+        {%- if role.end and role.end != role.start %} – {% include period.html date=role.end t=t %}{% endif -%}
+        {%- if role.type %} &middot; {{ t[role.type] }}{% endif -%}
+        {%- if role.city %} &middot; {{ role.city }}{% endif -%}
+        {%- if role.remote %} &middot; {{ t.remote }}{% endif -%}
+      </span>
+      {% if summary %}<p>{{ summary }}</p>{% endif %}
+    </div>
+    {%- endfor %}
+  </li>
+  {%- endfor %}
+</ul>

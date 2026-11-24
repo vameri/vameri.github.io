@@ -1,4 +1,5 @@
 ---
+ref: privacytools
 title: "PrivacyTools"
 headline: "Maven · PrivacyTools — MVP, marca e experiência"
 role: "UX Designer / Product Designer"
@@ -16,6 +17,9 @@ mockup:
   screens:
     - /assets/images/work/privacytools/1.png
   position: "0% 0%"
+gallery:
+  - /assets/images/work/privacytools/1.png
+  - /assets/images/work/privacytools/2.png
 ---
 
 Atuei como UX Designer e Product Designer na startup PrivacyTools, liderando a concepção da identidade visual, experiência do usuário e prototipação do MVP da plataforma. Participei desde a fase inicial de definição do produto, auxiliando na transformação da visão de negócio em uma solução digital voltada à gestão de privacidade, governança de dados e adequação à LGPD.
@@ -38,7 +42,7 @@ Fui responsável por estruturar a experiência do usuário, definir a identidade
 ### Destaques do projeto
 
 - Criação completa da marca PrivacyTools, incluindo identidade visual e experiência digital.
-- Concepção e prototação do MVP que serviu como base para desenvolvimento da plataforma.
+- Concepção e prototipação do MVP que serviu como base para desenvolvimento da plataforma.
 - Participação na definição estratégica de um produto voltado ao mercado de LGPD e Governança de Dados.
 - Estruturação dos principais módulos da solução antes do início do desenvolvimento.
 - Apoio na apresentação do produto para investidores e potenciais clientes.

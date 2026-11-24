@@ -4,15 +4,18 @@ permalink: /blog/:title
 # so be sure to set them if your theme uses them.
 #
 title : vameri
-description: UX Designer, Desenvolvedor Front End e Coordenador do GUFERS, entusiasta em tecnologia e na comunidade.
-keywords: site vameri, UX Designer, Front End, desenvolvedor web, GUFERS
+description: Product Designer, Desenvolvedor Fullstack, Scrum Master, Agilista, Product Engineer e Community Manager em Porto Alegre, RS.
+keywords: Vagner Ribas, vameri, Product Designer, UX Designer, Product Discovery, Design Systems, Figma, Desenvolvedor Fullstack, Scrum Master, Product Engineer, Porto Alegre
 author : 
   name : vameri
   email : vameri@pm.me
   github : https://github.com/vameri
-  linkdin: http://br.linkedin.com/in/vameri
+  linkdin: https://www.linkedin.com/in/vagneribas/
 
-production_url : http://vameri.github.io/
+production_url : https://vameri.github.io/
+
+languages: ["pt", "en", "es"]
+default_lang: pt
 
 collections:
   work:
@@ -22,15 +25,46 @@ collections:
 defaults:
   - scope:
       path: ""
+    values:
+      lang: pt
+  - scope:
+      path: "en"
+    values:
+      lang: en
+  - scope:
+      path: "es"
+    values:
+      lang: es
+  - scope:
+      path: ""
       type: work
     values:
       layout: project
       section: work
   - scope:
+      path: "_work/pt"
+      type: work
+    values:
+      lang: pt
+      permalink: /work/:name/
+  - scope:
+      path: "_work/en"
+      type: work
+    values:
+      lang: en
+      permalink: /en/work/:name/
+  - scope:
+      path: "_work/es"
+      type: work
+    values:
+      lang: es
+      permalink: /es/work/:name/
+  - scope:
       path: ""
       type: posts
     values:
       section: blog
+      lang: pt
 
 exclude:
   - node_modules

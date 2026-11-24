@@ -1,9 +1,10 @@
 ---
+ref: care-plus
 title: "Care Plus"
 headline: "Aplicativo Care Plus (Android e iOS) · CWI"
 role: "Product Designer e UX Designer"
 year: 2023
-order: 4
+order: 3
 cover: /assets/images/work/care-plus/2.png
 cover_position: "50% 50%"
 images:
@@ -19,6 +20,9 @@ mockup:
     - /assets/images/work/care-plus/m1.jpg
     - /assets/images/work/care-plus/m2.jpg
     - /assets/images/work/care-plus/m3.jpg
+gallery:
+  - /assets/images/work/care-plus/2.png
+  - /assets/images/work/care-plus/1.png
 ---
 
 Atuei como Product Designer e UX Designer na evolução contínua do aplicativo Care Plus para Android e iOS, conduzindo iniciativas de pesquisa, arquitetura da informação, design de interface e otimização da experiência do usuário. Trabalhei diretamente na identificação de pontos de fricção da jornada digital, propondo soluções centradas no usuário que resultaram em fluxos mais simples, intuitivos e eficientes.

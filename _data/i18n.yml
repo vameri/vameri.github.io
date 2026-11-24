@@ -1,0 +1,84 @@
+# Interface strings per language. Portuguese (pt) is the default.
+pt:
+  short: PT
+  name: Português
+  html_lang: pt-BR
+  og_locale: pt_BR
+  prefix: ""
+  description: Product Designer e Desenvolvedor Fullstack em Porto Alegre, Brasil.
+  nav_work: Trabalhos
+  nav_about: Sobre
+  nav_blog: Blog
+  main_menu: Menu principal
+  open_menu: Abrir menu
+  close_menu: Fechar menu
+  language: Idioma
+  social: Redes sociais
+  all_work: Todos os trabalhos
+  screen: tela
+  months: [jan, fev, mar, abr, mai, jun, jul, ago, set, out, nov, dez]
+  present: atual
+  full_time: Tempo integral
+  part_time: Meio período
+  internship: Estágio
+  remote: Remoto
+  blog_note: ""
+  read_more: Ler mais
+  download_cv: Baixar currículo (PDF)
+  cv_note: ""
+
+en:
+  short: EN
+  name: English
+  html_lang: en
+  og_locale: en_US
+  prefix: /en
+  description: Product Designer and Fullstack Developer based in Porto Alegre, Brazil.
+  nav_work: Work
+  nav_about: About
+  nav_blog: Blog
+  main_menu: Main menu
+  open_menu: Open menu
+  close_menu: Close menu
+  language: Language
+  social: Social
+  all_work: All work
+  screen: screen
+  months: [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+  present: Present
+  full_time: Full-time
+  part_time: Part-time
+  internship: Internship
+  remote: Remote
+  blog_note: Posts are written in Portuguese.
+  read_more: Read more
+  download_cv: Download CV (PDF)
+  cv_note: In Portuguese.
+
+es:
+  short: ES
+  name: Español
+  html_lang: es
+  og_locale: es_ES
+  prefix: /es
+  description: Product Designer y Desarrollador Fullstack en Porto Alegre, Brasil.
+  nav_work: Trabajos
+  nav_about: Sobre mí
+  nav_blog: Blog
+  main_menu: Menú principal
+  open_menu: Abrir menú
+  close_menu: Cerrar menú
+  language: Idioma
+  social: Redes sociales
+  all_work: Todos los trabajos
+  screen: pantalla
+  months: [ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic]
+  present: actualidad
+  full_time: Tiempo completo
+  part_time: Medio tiempo
+  internship: Pasantía
+  remote: Remoto
+  blog_note: Los artículos están escritos en portugués.
+  read_more: Leer más
+  download_cv: Descargar CV (PDF)
+  cv_note: En portugués.

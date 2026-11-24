@@ -1,60 +1,67 @@
 ---
 layout: default
-title: About
+title: Sobre
+ref: about
 section: about
-description: UX Designer and Front End Developer
+description: Product Designer, Desenvolvedor Fullstack, Scrum Master e Product Engineer em Porto Alegre, Brasil.
 ---
 <article class="page">
-  <p class="page-intro">I'm Vagner Ribas, a UX Designer and Front End Developer working with interface design since 2008.</p>
+  <p class="page-intro">Sou Vagner Ribas, Product Designer e Desenvolvedor Fullstack em Porto Alegre, Brasil.</p>
 
   <img class="about-photo" src="/assets/images/vameri.jpg" alt="Vagner Ribas">
 
+  <p class="lead">Product Designer apaixonado por criar produtos digitais que resolvem problemas reais e geram impacto para usuários e negócios. Atuo em todo o ciclo de desenvolvimento de produtos: Discovery, pesquisa com usuários e definição de requisitos, wireframes, prototipação, testes de usabilidade, Design Systems e acompanhamento da implementação junto às equipes de desenvolvimento.</p>
+
+  {% include cv-button.html %}
+
   <p>
-    I have experience in several companies, with a focus on interface design, planning, information architecture and development.
-    I'm enthusiastic about different technologies and enjoy taking part in, and creating, community groups to share knowledge and build a network.
+    Hoje atuo como Scrum Master na <strong>Interprocess Gemed — Tecnologia em Saúde</strong>. Meu trabalho fica entre o design de produto,
+    o desenvolvimento fullstack e as práticas ágeis, atuando como Product Designer, Product Engineer, Scrum Master, agilista e community manager.
   </p>
   <p>
-    In 2011 I started an internship as a Graphic Designer and Web Designer at <a href="https://db.tec.br/" target="_blank" rel="noopener noreferrer">DBServer</a>, in the marketing area.
-    That was my first contact with the technology area. See my <a href="https://www.notion.so/vameri/Vagner-Ribas-0be92a0823d7422c9ae1f194d77f1e6f" target="_blank" rel="noopener noreferrer">full portfolio</a> or the <a href="/bio/">complete bio</a>.
+    Trabalho com design de interfaces desde 2008, em diversas empresas, com foco em design de interface, planejamento, arquitetura da informação
+    e desenvolvimento. Sou entusiasta de tecnologias variadas e gosto de participar e criar grupos em comunidades para compartilhar conhecimento e gerar networking.
+  </p>
+  <p>
+    Em 2011 comecei um estágio como Designer Gráfico e Web Designer na <a href="https://db.tec.br/" target="_blank" rel="noopener noreferrer">DBServer</a>, na área de marketing —
+    meu primeiro contato com a área de tecnologia. Veja meu <a href="https://www.notion.so/vameri/Vagner-Ribas-0be92a0823d7422c9ae1f194d77f1e6f" target="_blank" rel="noopener noreferrer">portfólio completo</a> ou a <a href="/bio/">bio completa</a>.
   </p>
 
   <hr>
 
-  <h2>Selected work</h2>
-  <ul class="timeline">
-    {%- assign items = site.work | sort: "order" -%}
-    {%- for item in items %}
-    <li>
-      <span class="when">{{ item.year }}</span>
-      <a class="what" href="{{ item.url }}">{{ item.title }}</a> &mdash; {{ item.role }}<br><small>{{ item.headline }}</small>
-    </li>
-    {%- endfor %}
+  <h2>Experiência</h2>
+  {% include experience.html limit=4 %}
+  <p><a href="/bio/">Ver a trajetória completa &rarr;</a></p>
+
+  <hr>
+
+  <h2>Trabalhos selecionados</h2>
+  {% include selected-work.html %}
+
+  <hr>
+
+  <h2>Conhecimentos e habilidades</h2>
+  {% include skills.html %}
+
+  <hr>
+
+
+  <h2>Interesses atuais</h2>
+  <ul>
+    <li>UX e UI</li>
+    <li>Arquitetura da Informação</li>
+    <li>Práticas Ágeis</li>
+    <li>Product Design e Product Engineering</li>
+    <li>Desenvolvimento Fullstack</li>
+  </ul>
+
+  <h2>Formação</h2>
+  <ul>
+    <li>Graduação em Publicidade e Propaganda — PUCRS (Pontifícia Universidade Católica do Rio Grande do Sul)</li>
   </ul>
 
   <hr>
 
-  <h2>What I've worked with</h2>
-  <ul>
-    <li>HTML, CSS, JavaScript</li>
-    <li>Bootstrap</li>
-    <li>Figma, Photoshop, Illustrator</li>
-    <li>Agile Methods, Design Thinking, Design Sprint, Lean Inception, Kanban Method, Accessibility</li>
-  </ul>
-
-  <h2>Current interests</h2>
-  <ul>
-    <li>UX and UI</li>
-    <li>Information Architecture</li>
-    <li>Agile Practices</li>
-    <li>Front End Development</li>
-  </ul>
-
-  <hr>
-
-  <h2>Get in touch</h2>
-  <ul>
-    <li><a href="mailto:vameri@gmail.com">vameri@gmail.com</a></li>
-    <li><a href="https://github.com/vameri" target="_blank" rel="noopener noreferrer">github.com/vameri</a></li>
-    <li><a href="http://br.linkedin.com/in/vameri" target="_blank" rel="noopener noreferrer">linkedin.com/in/vameri</a></li>
-  </ul>
+  <h2>Contato</h2>
+  {% include contact.html %}
 </article>

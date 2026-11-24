@@ -1,0 +1,5 @@
+{%- comment -%} Formats a "YYYY-MM" / "YYYY" date with localized month names. Params: date, t {%- endcomment -%}
+{%- if include.date == "present" -%}{{ include.t.present }}{%- else -%}
+{%- assign _p = include.date | split: "-" -%}
+{%- if _p.size == 2 -%}{%- assign _m = _p[1] | minus: 1 -%}{{ include.t.months[_m] }} {{ _p[0] }}{%- else -%}{{ _p[0] }}{%- endif -%}
+{%- endif -%}

@@ -1,0 +1,22 @@
+---
+layout: default
+section: work
+---
+{%- assign base_items = site.work | where: "lang", "pt" | sort: "order" -%}
+{%- assign local_items = site.work | where: "lang", page.lang -%}
+<div class="grid">
+  {%- for base in base_items %}
+  {%- assign item = local_items | where: "ref", base.ref | first | default: base %}
+  {%- assign tile = base.mockup.bg | default: '#e9e9e6' %}
+  <div class="asset{% unless base.cover or base.mockup %} no-image{% endunless %}">
+    <a href="{{ item.url }}" style="--tile: {{ tile }};" aria-label="{{ item.title }} — {{ item.role }}, {{ base.year }}">
+      {%- if base.mockup %}
+      {% include mockup.html mockup=base.mockup %}
+      {%- elsif base.cover %}
+      <div class="asset-holder" style="background-image: url('{{ base.cover }}'); background-position: {{ base.cover_position | default: '50% 50%' }};"></div>
+      {%- endif %}
+      <div class="title">{{ item.title }}<small>{{ item.role }} &middot; {{ base.year }}</small></div>
+    </a>
+  </div>
+  {%- endfor %}
+</div>

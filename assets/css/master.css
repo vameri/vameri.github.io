@@ -157,6 +157,31 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
 .main-menu a.is-active { color: var(--ink); }
 
 .menu .social { display: none; }
+.menu { display: flex; align-items: center; gap: 40px; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.lang-switch a {
+  display: block;
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s ease-in-out, background .2s ease-in-out;
+}
+
+.lang-switch a:hover { color: var(--accent); }
+.lang-switch a.is-active { color: var(--ink); background: rgba(0, 0, 0, .06); }
+
 
 .toggle-menu {
   display: none;
@@ -205,6 +230,8 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
   .main-menu a { font-size: 30px; line-height: 1.5; }
 
   .menu .social { display: flex; justify-content: flex-end; }
+  .menu { align-items: stretch; gap: 0; }
+  .lang-switch { justify-content: flex-end; margin: 40px 0 auto; font-size: 15px; }
 
   .menu-backdrop {
     position: fixed;
@@ -486,6 +513,26 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
 .project-headline { margin: 0 0 6px; color: var(--heading); font-size: 20px; font-weight: 600; line-height: 1.4; }
 .project-meta { margin: 0; color: var(--soft); font-size: 15px; }
 
+.project-hero {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 80vh;
+  margin: 0 0 60px;
+  overflow: hidden;
+  background: var(--tile, #e9e9e6);
+  container-type: size;
+}
+
+.project-hero .device-laptop { width: 60cqw; }
+.project-hero .device-browser { width: 74cqw; }
+.project-hero .mockup--n3 .device-phone { height: 74cqh; }
+
+@media (max-width: 767px) {
+  .project-hero { aspect-ratio: 4 / 3; margin-bottom: 40px; }
+  .project-hero .device-laptop { width: 78cqw; }
+  .project-hero .device-browser { width: 88cqw; }
+}
+
 .project-figure { margin: 0 0 40px; }
 .project-figure img {
   display: block;
@@ -537,6 +584,12 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
 .timeline .when { display: block; color: var(--soft); font-size: 14px; }
 .timeline .what { font-weight: 700; color: var(--heading); }
 .timeline p { margin: 8px 0 0; }
+.experience > li { padding: 20px 0; }
+.experience .what { display: block; margin-bottom: 4px; font-size: 18px; }
+.experience .role { margin-top: 14px; padding-left: 16px; border-left: 2px solid var(--line); }
+.experience .role strong a { text-decoration: none; }
+.experience .role .when { margin-top: 2px; }
+.experience .role p { font-size: 15px; }
 
 /* ==========================================================
    Blog
@@ -602,3 +655,39 @@ article.list p { margin: 0; }
 .main > article:not(.page):not(.project) { max-width: 760px; }
 .main > article:not(.page):not(.project):first-child { padding-top: 40px; }
 .main > article:not(.page):not(.project):last-child { padding-bottom: 40px; }
+
+.blog-note { color: var(--soft); font-size: 15px; }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 40px; margin: 0 0 20px; }
+.skills__group h3 { margin: 0 0 10px; font-size: 15px; font-weight: 700; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.tags li {
+  padding: 3px 10px;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 100px;
+  background: #fff;
+  color: var(--heading);
+  font-size: 13px;
+  line-height: 1.6;
+}
+@media (max-width: 767px) { .skills { grid-template-columns: 1fr; } }
+
+/* CV download */
+.cv-download { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 40px; }
+.btn-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: var(--heading);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .25s ease;
+}
+.btn-cv:hover { background: var(--accent); color: #fff; }
+
+.lead { font-size: 18px; color: var(--heading); }

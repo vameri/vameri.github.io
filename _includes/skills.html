@@ -1,0 +1,13 @@
+{%- assign lang = page.lang | default: site.default_lang -%}
+{%- assign key = "items_" | append: lang -%}
+<div class="skills">
+  {%- for s in site.data.skills %}
+  {%- assign items = s[key] | default: s.items | default: s.items_pt %}
+  <div class="skills__group">
+    <h3>{{ s.group[lang] | default: s.group.pt }}</h3>
+    <ul class="tags">
+      {%- for i in items %}<li>{{ i }}</li>{%- endfor %}
+    </ul>
+  </div>
+  {%- endfor %}
+</div>

@@ -2,19 +2,25 @@
 layout: default
 section: work
 ---
+{%- assign t = site.data.i18n[page.lang] -%}
+{%- assign base = site.work | where: "lang", "pt" | where: "ref", page.ref | first | default: page -%}
 <article class="project">
   <header class="project-header">
     <h1>{{ page.title }}</h1>
     {% if page.headline %}<p class="project-headline">{{ page.headline }}</p>{% endif %}
     <p class="project-meta">
-      {{ page.role }}{% if page.year %} &middot; {{ page.year }}{% endif %}
-      {% if page.link %} &middot; <a href="{{ page.link }}" target="_blank" rel="noopener noreferrer">{{ page.link_label | default: "Website" }}</a>{% endif %}
+      {{ page.role }}{% if base.year %} &middot; {{ base.year }}{% endif %}
+      {% if base.link %} &middot; <a href="{{ base.link }}" target="_blank" rel="noopener noreferrer">{{ base.link_label | default: "Website" }}</a>{% endif %}
     </p>
   </header>
 
-  {% if page.cover %}
+  {% if base.mockup %}
+  <div class="project-hero" style="--tile: {{ base.mockup.bg }};" role="img" aria-label="{{ page.title }} — {{ page.headline }}">
+    {% include mockup.html mockup=base.mockup %}
+  </div>
+  {% elsif base.cover %}
   <figure class="project-figure">
-    <img src="{{ page.cover }}" alt="{{ page.title }} — {{ page.caption | default: page.headline }}">
+    <img src="{{ base.cover }}" alt="{{ page.title }} — {{ page.caption | default: page.headline }}">
     {% if page.caption %}<figcaption>{{ page.caption }}</figcaption>{% endif %}
   </figure>
   {% endif %}
@@ -23,23 +29,29 @@ section: work
     {{ content }}
   </div>
 
-  {% assign extra = page.images | where_exp: "img", "img != page.cover" %}
+  {% if base.mockup %}
+    {% assign extra = base.gallery %}
+  {% else %}
+    {% assign extra = base.images | where_exp: "img", "img != base.cover" %}
+  {% endif %}
   {% if extra.size > 0 %}
   <div class="project-gallery">
     {% for img in extra %}
-    <figure class="project-figure"><img src="{{ img }}" alt="{{ page.title }} — tela {{ forloop.index | plus: 1 }}" loading="lazy"></figure>
+    <figure class="project-figure">
+      <img src="{{ img }}" alt="{{ page.title }} — {{ t.screen }} {{ forloop.index }}" loading="lazy">
+      {% if forloop.first and page.caption and base.mockup %}<figcaption>{{ page.caption }}</figcaption>{% endif %}
+    </figure>
     {% endfor %}
   </div>
   {% endif %}
 
-  {% assign items = site.work | sort: "order" %}
-  {% for item in items %}
-    {% if item.url == page.url %}
-      {% unless forloop.last %}{% assign next = items[forloop.index] %}{% endunless %}
-    {% endif %}
-  {% endfor %}
+  {%- assign base_items = site.work | where: "lang", "pt" | sort: "order" -%}
+  {%- assign next = nil -%}
+  {%- for item in base_items -%}
+    {%- if item.ref == page.ref and forloop.last == false -%}{%- assign next_base = base_items[forloop.index] -%}{%- assign next = site.work | where: "lang", page.lang | where: "ref", next_base.ref | first -%}{%- endif -%}
+  {%- endfor %}
   <nav class="project-nav">
-    <a href="/">&larr; All work</a>
+    <a href="{{ t.prefix }}/">&larr; {{ t.all_work }}</a>
     {% if next %}<a href="{{ next.url }}">{{ next.title }} &rarr;</a>{% endif %}
   </nav>
 </article>

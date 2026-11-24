@@ -1,0 +1,8 @@
+{%- assign t = site.data.i18n[page.lang] -%}
+<p class="cv-download">
+  <a class="btn-cv" href="/CV_Vagner_Ribas.pdf" download>
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1v9m0 0L4.5 6.5M8 10l3.5-3.5M2 12v2h12v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {{ t.download_cv }}
+  </a>
+  {% if t.cv_note != "" %}<small>{{ t.cv_note }}</small>{% endif %}
+</p>

@@ -1,4 +1,5 @@
 ---
+ref: datum
 title: "Datum"
 headline: "Datum TI · Projeto Sulgás"
 role: "UX Designer"
@@ -18,6 +19,7 @@ mockup:
     - /assets/images/work/datum/m1.jpg
     - /assets/images/work/datum/m2.jpg
     - /assets/images/work/datum/m3.jpg
+gallery: []
 ---
 
 Atuei como UX Designer na Datum TI, participando de projetos digitais para plataformas web e aplicativos móveis, com destaque para a transformação digital da Sulgás. Fui responsável pela concepção da experiência dos usuários, arquitetura da informação e desenho das interfaces do portal e dos aplicativos Android e iOS, contribuindo para a modernização dos canais digitais da companhia.

@@ -1,0 +1,9 @@
+{%- assign t = site.data.i18n[page.lang] -%}
+{% if t.blog_note != "" %}<p class="blog-note">{{ t.blog_note }}</p>{% endif %}
+{% for post in site.posts %}
+<article class="list">
+  <small>{{ post.date | date: "%d/%m/%Y" }}</small>
+  <h2><a href="{{ post.url }}" lang="pt-BR">{{ post.title }}</a></h2>
+  {% if post.description %}<p lang="pt-BR">{{ post.description }}</p>{% endif %}
+</article>
+{% endfor %}

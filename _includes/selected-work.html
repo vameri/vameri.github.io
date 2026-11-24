@@ -1,0 +1,11 @@
+{%- assign base_items = site.work | where: "lang", "pt" | sort: "order" -%}
+{%- assign local_items = site.work | where: "lang", page.lang -%}
+<ul class="timeline">
+  {%- for base in base_items %}
+  {%- assign item = local_items | where: "ref", base.ref | first | default: base %}
+  <li>
+    <span class="when">{{ base.year }}</span>
+    <a class="what" href="{{ item.url }}">{{ item.title }}</a> &mdash; {{ item.role }}<br><small>{{ item.headline }}</small>
+  </li>
+  {%- endfor %}
+</ul>

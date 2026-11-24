@@ -1,0 +1,36 @@
+# Skills shown on the About page (source: CV_Vagner_Ribas.pdf).
+# "items" is shared by all languages; use items_pt / items_en / items_es when the text needs translation.
+
+- group: { pt: Pesquisa e dados, en: Research and data, es: Investigación y datos }
+  items_pt: [Grupos focais, Testes de usabilidade, Pesquisa etnográfica, Análise de métricas, Dados demográficos e psicográficos, Jornada do usuário, Heurísticas, Entrevistas e pesquisas online, Personas, BI]
+  items_en: [Focus groups, Usability testing, Ethnographic research, Metrics analysis, Demographic and psychographic data, User journeys, Heuristic evaluation, Interviews and online surveys, Personas, BI]
+  items_es: [Grupos focales, Pruebas de usabilidad, Investigación etnográfica, Análisis de métricas, Datos demográficos y psicográficos, Recorrido del usuario, Heurísticas, Entrevistas y encuestas online, Personas, BI]
+
+- group: { pt: UX Design, en: UX Design, es: UX Design }
+  items_pt: [Product Discovery, Design Systems, Protótipos, Wireframes, Design Sprint, Brainstorm, Web Design, Grids, Briefing]
+  items_en: [Product Discovery, Design Systems, Prototypes, Wireframes, Design Sprint, Brainstorming, Web Design, Grids, Briefing]
+  items_es: [Product Discovery, Design Systems, Prototipos, Wireframes, Design Sprint, Brainstorming, Diseño Web, Grids, Briefing]
+
+- group: { pt: Inteligência Artificial, en: Artificial Intelligence, es: Inteligencia Artificial }
+  items: [ChatGPT, Gemini, Claude, Cursor, Llama, Antigravity, Copilot]
+
+- group: { pt: Ferramentas, en: Tools, es: Herramientas }
+  items_pt: [Figma, Visual Studio Code, Balsamiq, GitHub, Illustrator, Photoshop, Jira, Miro, Notion, Loom, Pacote Office, Azure DevOps]
+  items_en: [Figma, Visual Studio Code, Balsamiq, GitHub, Illustrator, Photoshop, Jira, Miro, Notion, Loom, Microsoft Office, Azure DevOps]
+  items_es: [Figma, Visual Studio Code, Balsamiq, GitHub, Illustrator, Photoshop, Jira, Miro, Notion, Loom, Paquete Office, Azure DevOps]
+
+- group: { pt: Front End, en: Front End, es: Front End }
+  items: [HTML, CSS, JavaScript, Bootstrap, Flexbox, CSS Grid, React, Next.js, Angular, Vue]
+
+- group: { pt: Back End, en: Back End, es: Back End }
+  items: [PHP, JavaScript, Python, Laravel, MySQL, PostgreSQL]
+
+- group: { pt: Metodologias, en: Methodologies, es: Metodologías }
+  items_pt: [Métodos ágeis, Scrum, Design Thinking, Design Sprint, Lean Inception, Kanban, Método Kanban, Acessibilidade, Discovery e Refinamento]
+  items_en: [Agile methods, Scrum, Design Thinking, Design Sprint, Lean Inception, Kanban, Kanban Method, Accessibility, Discovery and Refinement]
+  items_es: [Métodos ágiles, Scrum, Design Thinking, Design Sprint, Lean Inception, Kanban, Método Kanban, Accesibilidad, Discovery y Refinamiento]
+
+- group: { pt: Idiomas, en: Languages, es: Idiomas }
+  items_pt: [Português — nativo, Inglês — intermediário, Espanhol — básico]
+  items_en: [Portuguese — native, English — intermediate, Spanish — basic]
+  items_es: [Portugués — nativo, Inglés — intermedio, Español — básico]

@@ -1,4 +1,5 @@
 ---
+ref: interprocess
 title: "Interprocess"
 headline: "GEMED 2.1 · Sistema de Gestão para Clínicas e Hospitais"
 role: "Product Designer"
@@ -9,16 +10,17 @@ cover_position: "50% 0%"
 images:
   - /assets/images/work/interprocess/1.png
 caption: "Tela do prontuário — protótipo de alta fidelidade no Figma."
-description: "image.png"
+description: "Product Designer no GEMED 2.1, sistema da Interprocess para a gestão de clínicas e hospitais, com foco especial no tratamento oncológico."
 mockup:
   type: laptop
   bg: "#DCE7F2"
   screens:
     - /assets/images/work/interprocess/1.png
   position: "50% 0%"
+gallery:
+  - /assets/images/work/interprocess/1.png
 ---
 
-image.png
 
 Atuei como Product Designer no GEMED 2.1, sistema desenvolvido pela Interprocess para apoiar a gestão de clínicas e hospitais, com foco especial nos processos relacionados ao tratamento oncológico.
 

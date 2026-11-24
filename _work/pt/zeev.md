@@ -1,4 +1,5 @@
 ---
+ref: zeev
 title: "Zeev"
 headline: "Zeev BPM · Plataforma de automação de processos"
 role: "UX Designer"
@@ -17,6 +18,7 @@ mockup:
   screens:
     - /assets/images/work/zeev/1.png
   position: "0% 0%"
+gallery: []
 ---
 
 Atuei como UX Designer na área de Produtos & Desenvolvimento da Zeev, plataforma de automação de processos (BPM), sendo responsável pela concepção e evolução da experiência dos usuários em módulos estratégicos do produto. Trabalhei na definição de fluxos, arquitetura da informação, interfaces e componentes reutilizáveis, contribuindo para tornar a plataforma mais intuitiva, configurável e escalável para empresas de diferentes segmentos.
