@@ -9,6 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if page.ref == "home" %}{{ site.title }} - {{ t.description }}{% else %}{{ page.title }} - {{ site.title }}{% endif %}</title>
     <meta content="{{ site.keywords }}" name="keywords">
+    {%- if page.medium_url %}
+    <link rel="canonical" href="{{ page.medium_url }}">
+    {%- endif %}
     <meta content="{{ page.description | default: t.description }}" name="description">
 
     <meta property="og:title" content="{{ site.title }} - {{ page.title }}" />

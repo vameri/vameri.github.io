@@ -1,0 +1,34 @@
+---
+layout: default
+section: blog
+---
+{%- assign t = site.data.i18n[page.lang] -%}
+{%- assign blog_url = t.prefix | append: "/blog/" -%}
+<article class="post-page">
+  <header class="post-header">
+    <small><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d/%m/%Y" }}</time>{% if page.medium_url %} &middot; Medium{% endif %}</small>
+    <h1>{{ page.title }}</h1>
+  </header>
+
+  {% if page.image %}
+  <figure class="post-cover">
+    <img src="{{ page.image }}" alt="">
+    {% if page.image_caption %}<figcaption>{{ page.image_caption }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  {% if page.tags.size > 0 %}
+  <ul class="tags post-tags">
+    {%- for tag in page.tags %}<li>{{ tag | replace: "-", " " }}</li>{%- endfor %}
+  </ul>
+  {% endif %}
+
+  <nav class="project-nav">
+    <a href="{{ blog_url }}">&larr; {{ t.back_to_blog }}</a>
+    {% if page.medium_url %}<a href="{{ page.medium_url }}" target="_blank" rel="noopener noreferrer">{{ t.originally_on_medium }} &rarr;</a>{% endif %}
+  </nav>
+</article>

@@ -1,9 +1,16 @@
 {%- assign t = site.data.i18n[page.lang] -%}
-{% if t.blog_note != "" %}<p class="blog-note">{{ t.blog_note }}</p>{% endif %}
-{% for post in site.posts %}
-<article class="list">
-  <small>{{ post.date | date: "%d/%m/%Y" }}</small>
-  <h2><a href="{{ post.url }}" lang="pt-BR">{{ post.title }}</a></h2>
-  {% if post.description %}<p lang="pt-BR">{{ post.description }}</p>{% endif %}
-</article>
-{% endfor %}
+<p class="blog-intro">{{ t.blog_intro }} <a href="https://medium.com/@vagneribas" target="_blank" rel="noopener noreferrer">medium.com/@vagneribas</a>{% if t.blog_note != "" %} &middot; {{ t.blog_note }}{% endif %}</p>
+<div class="post-list">
+  {%- for post in site.posts %}
+  <article class="post-item">
+    <a class="post-item__link" href="{{ post.url }}" lang="pt-BR">
+      {% if post.image %}<img class="post-item__img" src="{{ post.image }}" alt="" loading="lazy">{% endif %}
+      <div class="post-item__body">
+        <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d/%m/%Y" }}</time></small>
+        <h2>{{ post.title }}</h2>
+        {% if post.description %}<p>{{ post.description }}</p>{% endif %}
+      </div>
+    </a>
+  </article>
+  {%- endfor %}
+</div>

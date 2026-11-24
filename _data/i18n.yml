@@ -25,6 +25,9 @@ pt:
   blog_note: ""
   read_more: Ler mais
   download_cv: Baixar currículo (PDF)
+  back_to_blog: Voltar ao blog
+  originally_on_medium: Publicado originalmente no Medium
+  blog_intro: "Artigos sobre produto, UX, design e IA. Também no Medium:"
   cv_note: ""
 
 en:
@@ -53,6 +56,9 @@ en:
   blog_note: Posts are written in Portuguese.
   read_more: Read more
   download_cv: Download CV (PDF)
+  back_to_blog: Back to blog
+  originally_on_medium: Originally published on Medium
+  blog_intro: "Articles about product, UX, design and AI. Also on Medium:"
   cv_note: In Portuguese.
 
 es:
@@ -81,4 +87,7 @@ es:
   blog_note: Los artículos están escritos en portugués.
   read_more: Leer más
   download_cv: Descargar CV (PDF)
+  back_to_blog: Volver al blog
+  originally_on_medium: Publicado originalmente en Medium
+  blog_intro: "Artículos sobre producto, UX, diseño e IA. También en Medium:"
   cv_note: En portugués.

@@ -1,27 +1,24 @@
 ---
 layout: null
 ---
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.production_url }}</title>
-    <link>http://{{ site.production_url}}</link>
-    <atom:link href="http://{{ site.production_url}}/rss.xml" rel="self" type="application/rss+xml" />
-    <description>{{ site.author.name }}</description>
-    <language>en-us</language>
-    <pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-    <lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
-
+    <title>Vagner Ribas — Blog</title>
+    <link>{{ site.production_url }}blog/</link>
+    <atom:link href="{{ site.production_url }}rss.xml" rel="self" type="application/rss+xml" />
+    <description>{{ site.data.i18n.pt.blog_intro | remove: ":" }}</description>
+    <language>pt-BR</language>
+    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
     {% for post in site.posts %}
     <item>
-      <title>{{ post.title }}</title>
-      <link>{{ site.production_url }}{{ post.url }}</link>
-      <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-      <author>{{ site.author.name }}</author>
-      <guid>{{ site.production_url }}{{ post.id }}</guid>
+      <title>{{ post.title | xml_escape }}</title>
+      <link>{{ site.production_url }}{{ post.url | remove_first: "/" }}</link>
+      <guid isPermaLink="true">{{ site.production_url }}{{ post.url | remove_first: "/" }}</guid>
+      <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
       <description>{{ post.description | xml_escape }}</description>
     </item>
     {% endfor %}
-
-  </channel> 
+  </channel>
 </rss>
