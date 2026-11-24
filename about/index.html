@@ -1,48 +1,60 @@
 ---
 layout: default
-title: Home
+title: About
+section: about
 description: UX Designer and Front End Developer
 ---
+<article class="page">
+  <p class="page-intro">I'm Vagner Ribas, a UX Designer and Front End Developer working with interface design since 2008.</p>
 
-<article>
-  <h2> Skills</h2>
-  
-</article>
-<article>
-  <p>UX Designer, Front End Developer and Technology Enthusiast.</p>
-</article>
-<article>
-  <h2>What I've worked with.</h2>
-  <ul>
-    <li>HTML, CSS, JavaScript.</li>
-    <li>Bootstrap,...</li>
-    <li>Figma, Photoshop, Illustrator...</li>
-    <li>Agile Methods, Design Thinking, Sprint Design, Lean Inception, Kanban, Kanban Method, Accessibility...</li>
+  <img class="about-photo" src="/assets/images/vameri.jpg" alt="Vagner Ribas">
+
+  <p>
+    I have experience in several companies, with a focus on interface design, planning, information architecture and development.
+    I'm enthusiastic about different technologies and enjoy taking part in, and creating, community groups to share knowledge and build a network.
+  </p>
+  <p>
+    In 2011 I started an internship as a Graphic Designer and Web Designer at <a href="https://db.tec.br/" target="_blank" rel="noopener noreferrer">DBServer</a>, in the marketing area.
+    That was my first contact with the technology area. See my <a href="https://www.notion.so/vameri/Vagner-Ribas-0be92a0823d7422c9ae1f194d77f1e6f" target="_blank" rel="noopener noreferrer">full portfolio</a> or the <a href="/bio/">complete bio</a>.
+  </p>
+
+  <hr>
+
+  <h2>Selected work</h2>
+  <ul class="timeline">
+    {%- assign items = site.work | sort: "order" -%}
+    {%- for item in items %}
+    <li>
+      <span class="when">{{ item.year }}</span>
+      <a class="what" href="{{ item.url }}">{{ item.title }}</a> &mdash; {{ item.role }}<br><small>{{ item.headline }}</small>
+    </li>
+    {%- endfor %}
   </ul>
-</article>
-<article>
-    <h2>Current Interests</h2>
+
+  <hr>
+
+  <h2>What I've worked with</h2>
   <ul>
-    <li>UX e UI;</li>
-    <li>Information Architecture;</li>
-    <li>Agile Practices;</li>
-    <li>Front End Development.</li>
+    <li>HTML, CSS, JavaScript</li>
+    <li>Bootstrap</li>
+    <li>Figma, Photoshop, Illustrator</li>
+    <li>Agile Methods, Design Thinking, Design Sprint, Lean Inception, Kanban Method, Accessibility</li>
   </ul>
-</article>
-<article>
-  <h2>Where to find me</h2>
+
+  <h2>Current interests</h2>
   <ul>
-    <li><a href="mailto:vameri@gmail.com" alt="email vameri">vameri@gmail.com</a></li>
-    <li><a href="https://github.com/vameri" alt="github vameri" target="_blanck">github.com/vameri</a></li>
-    <li><a href="http://br.linkedin.com/in/vameri" alt="linkdin vameri" target="_blanck">linkedin.com/in/vameri/</a></li>
+    <li>UX and UI</li>
+    <li>Information Architecture</li>
+    <li>Agile Practices</li>
+    <li>Front End Development</li>
   </ul>
-</article>
-<article>
-  <h2>This page</h2>
+
+  <hr>
+
+  <h2>Get in touch</h2>
   <ul>
-    <li>Responsive, mobile friendly;</li>
-    <li>Created with Jekyll, HTML5, CSS3 and GruntJS;</li>
-    <li>Static, fast and optimized;</li>
-    <li>Source code available on my GitHub;</li>
+    <li><a href="mailto:vameri@gmail.com">vameri@gmail.com</a></li>
+    <li><a href="https://github.com/vameri" target="_blank" rel="noopener noreferrer">github.com/vameri</a></li>
+    <li><a href="http://br.linkedin.com/in/vameri" target="_blank" rel="noopener noreferrer">linkedin.com/in/vameri</a></li>
   </ul>
 </article>

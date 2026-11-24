@@ -1,69 +1,86 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>{{ page.title }} - {{ site.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.url == "/" %}{{ site.title }} - {{ page.description }}{% else %}{{ page.title }} - {{ site.title }}{% endif %}</title>
     <meta content="{{ site.keywords }}" name="keywords">
-    <meta content="{{ page.description }}" name="description">
+    <meta content="{{ page.description | default: site.description }}" name="description">
 
     <meta property="og:title" content="{{ site.title }} - {{ page.title }}" />
-    <meta property="og:description" content="{{ page.description }}" />
-    <meta property="og:image" content="{{ site.production_url }}/assets/images/bg.png" />
+    <meta property="og:description" content="{{ page.description | default: site.description }}" />
+    <meta property="og:image" content="{{ site.production_url }}assets/images/vameri.jpg" />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="/assets/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/assets/css/master.css">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YP11LW5QET"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-YP11LW5QET');
     </script>
   </head>
   <body>
-    <div class="wrapper">
-      <div class="navbar" role="navigation"> 
-        <nav class="menu"> 
-         <div class="trigger"> 
-           <div class="trigger-container">
-             <a class="menu-link active" href="/">Home</a> -
-             <a class="menu-link" href="/about/">Skills</a> -
-             <a class="menu-link" target="_blank"  href="https://www.notion.so/vameri/Vagner-Ribas-0be92a0823d7422c9ae1f194d77f1e6f">Portfolio</a>
+    {%- assign section = page.section | default: "" -%}
+    <header class="header" id="header">
+      <div class="header-container">
+        <h1 class="logo"><a href="/">Vagner Ribas</a></h1>
 
-            </div> 
-          </div> 
-        </nav> 
+        <button class="toggle-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+          <svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><path d="M0 1h26M0 9h26M0 17h26" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+
+        <nav class="menu" id="menu" aria-label="Main">
+          <ul class="main-menu">
+            <li><a href="/" class="{% if section == 'work' %}is-active{% endif %}">Work</a></li>
+            <li><a href="/about/" class="{% if section == 'about' %}is-active{% endif %}">About</a></li>
+            <li><a href="/blog/" class="{% if section == 'blog' %}is-active{% endif %}">Blog</a></li>
+          </ul>
+          {% include social.html %}
+        </nav>
       </div>
-      <header>
-       
-        <img src="{{ site.production_url }}/assets/images/vameri.jpg" alt="foto vameri" height="100" width="100">
-        <h2><a href="/" alt="home">Vagner Ribas</a></h2>
-        <p>UX Designer / Front End</p>
-        
-        
-        
-      </header>
-      <section>
-        {{ content }}
-      </section>
-      <footer>
-        
-        <p>© 2020 @vameri. Powered by Jekyll.</p>
-        
-      </footer>
-    </div>
-    
+    </header>
+    <div class="menu-backdrop"></div>
 
+    <main class="main">
+      {{ content }}
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <p class="copyright">Vagner Ribas &copy; {{ site.time | date: "%Y" }}</p>
+        {% include social.html %}
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var header = document.getElementById('header');
+        var toggle = header.querySelector('.toggle-menu');
+        var backdrop = document.querySelector('.menu-backdrop');
+
+        function setMenu(open) {
+          document.body.classList.toggle('menu-open', open);
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+
+        toggle.addEventListener('click', function () {
+          setMenu(!document.body.classList.contains('menu-open'));
+        });
+        backdrop.addEventListener('click', function () { setMenu(false); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+        function onScroll() { header.classList.toggle('is-scrolled', window.scrollY > 10); }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      })();
+    </script>
     <script src="/assets/js/all.min.js"></script>
-
-    {% include analytics.html %}
-
   </body>
 </html>

@@ -13,3 +13,31 @@ author :
   linkdin: http://br.linkedin.com/in/vameri
 
 production_url : http://vameri.github.io/
+
+collections:
+  work:
+    output: true
+    permalink: /work/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: work
+    values:
+      layout: project
+      section: work
+  - scope:
+      path: ""
+      type: posts
+    values:
+      section: blog
+
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json
+  - Gruntfile.js
+  - Gemfile
+  - Gemfile.lock
+  - README.markdown
+  - vendor

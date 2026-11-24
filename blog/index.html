@@ -1,11 +1,16 @@
 ---
 layout: default
 title: Blog
-description: Blog do f0rmig4. Engenheiro de software, artesão de bits, pai da Luz, apaixonado por games e por todos outros cacarecos tecnológicos.
+section: blog
+description: Blog do vameri.
 ---
-{% for post in site.posts %}
-	<article class="list">
-		<h2><a href="{{ post.url }}" alt="">{{ post.title }}</a></h2>
-		<p>{{post.description}}...</p>
-	</article>
-{% endfor %}
+<div class="page">
+  <h1>Blog</h1>
+  {% for post in site.posts %}
+  <article class="list">
+    <small>{{ post.date | date: "%d/%m/%Y" }}</small>
+    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+    {% if post.description %}<p>{{ post.description }}</p>{% endif %}
+  </article>
+  {% endfor %}
+</div>

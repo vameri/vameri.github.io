@@ -1,0 +1,45 @@
+---
+layout: default
+section: work
+---
+<article class="project">
+  <header class="project-header">
+    <h1>{{ page.title }}</h1>
+    {% if page.headline %}<p class="project-headline">{{ page.headline }}</p>{% endif %}
+    <p class="project-meta">
+      {{ page.role }}{% if page.year %} &middot; {{ page.year }}{% endif %}
+      {% if page.link %} &middot; <a href="{{ page.link }}" target="_blank" rel="noopener noreferrer">{{ page.link_label | default: "Website" }}</a>{% endif %}
+    </p>
+  </header>
+
+  {% if page.cover %}
+  <figure class="project-figure">
+    <img src="{{ page.cover }}" alt="{{ page.title }} — {{ page.caption | default: page.headline }}">
+    {% if page.caption %}<figcaption>{{ page.caption }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
+
+  <div class="project-body">
+    {{ content }}
+  </div>
+
+  {% assign extra = page.images | where_exp: "img", "img != page.cover" %}
+  {% if extra.size > 0 %}
+  <div class="project-gallery">
+    {% for img in extra %}
+    <figure class="project-figure"><img src="{{ img }}" alt="{{ page.title }} — tela {{ forloop.index | plus: 1 }}" loading="lazy"></figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% assign items = site.work | sort: "order" %}
+  {% for item in items %}
+    {% if item.url == page.url %}
+      {% unless forloop.last %}{% assign next = items[forloop.index] %}{% endunless %}
+    {% endif %}
+  {% endfor %}
+  <nav class="project-nav">
+    <a href="/">&larr; All work</a>
+    {% if next %}<a href="{{ next.url }}">{{ next.title }} &rarr;</a>{% endif %}
+  </nav>
+</article>
