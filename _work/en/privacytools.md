@@ -1,7 +1,7 @@
 ---
 ref: privacytools
 title: "PrivacyTools"
-headline: "Maven · PrivacyTools — MVP, brand and experience"
+headline: "Maven · PrivacyTools: MVP, brand and experience"
 role: "UX Designer / Product Designer"
 description: "UX Designer and Product Designer at the PrivacyTools startup, leading the visual identity, user experience and MVP prototyping of a privacy and LGPD compliance platform."
 ---

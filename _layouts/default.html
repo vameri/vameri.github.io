@@ -6,8 +6,17 @@
 <html lang="{{ t.html_lang }}">
   <head>
     <meta charset="utf-8">
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f5f5f5">
+    <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/favicon-192.png">
@@ -57,6 +66,11 @@
 
           {% include social.html %}
         </nav>
+
+        <button class="theme-toggle" type="button" data-label-dark="{{ t.theme_dark }}" data-label-light="{{ t.theme_light }}" aria-label="{{ t.theme_dark }}" title="{{ t.theme_dark }}">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
       </div>
     </header>
     <div class="menu-backdrop"></div>
@@ -89,6 +103,29 @@
         });
         backdrop.addEventListener('click', function () { setMenu(false); });
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+        var themeBtn = document.querySelector('.theme-toggle');
+        function applyTheme(t, save) {
+          document.documentElement.setAttribute('data-theme', t);
+          var label = t === 'dark' ? themeBtn.dataset.labelLight : themeBtn.dataset.labelDark;
+          themeBtn.setAttribute('aria-label', label);
+          themeBtn.setAttribute('title', label);
+          themeBtn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+          if (save) { try { localStorage.setItem('theme', t); } catch (e) {} }
+        }
+        applyTheme(document.documentElement.getAttribute('data-theme') || 'light', false);
+        themeBtn.addEventListener('click', function () {
+          applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+        });
+        if (window.matchMedia) {
+          var mq = matchMedia('(prefers-color-scheme: dark)');
+          var follow = function (e) {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (err) {}
+            if (!saved) applyTheme(e.matches ? 'dark' : 'light', false);
+          };
+          if (mq.addEventListener) mq.addEventListener('change', follow);
+        }
 
         function onScroll() { header.classList.toggle('is-scrolled', window.scrollY > 10); }
         window.addEventListener('scroll', onScroll, { passive: true });

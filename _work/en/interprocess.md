@@ -3,7 +3,7 @@ ref: interprocess
 title: "Interprocess"
 headline: "GEMED 2.1 · Management System for Clinics and Hospitals"
 role: "Product Designer"
-caption: "Patient record screen — high-fidelity prototype in Figma."
+caption: "Patient record screen, high-fidelity prototype in Figma."
 description: "Product Designer on GEMED 2.1, a system developed by Interprocess to support the management of clinics and hospitals, with a special focus on oncology treatment."
 ---
 

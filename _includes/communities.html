@@ -1,0 +1,11 @@
+{%- assign lang = page.lang | default: site.default_lang -%}
+<ul class="timeline communities">
+  {%- for c in site.data.communities %}
+  {%- if c.year[lang] %}{% assign year = c.year[lang] %}{% else %}{% assign year = c.year %}{% endif %}
+  <li>
+    <span class="when">{{ year }}</span>
+    <span class="what">{{ c.name }}</span>
+    <p>{{ c.text[lang] | default: c.text.pt }}</p>
+  </li>
+  {%- endfor %}
+</ul>

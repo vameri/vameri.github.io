@@ -1,13 +1,13 @@
 # Data used for search engines (JSON-LD structured data).
 name: Vagner Ribas
-photo: /assets/images/vameri.jpg
+photo: /assets/images/vagner-ribas.jpg
 email: vameri@gmail.com
 city: Porto Alegre
 region: RS
 country: BR
-works_for: Interprocess Gemed — Tecnologia em Saúde
+works_for: Interprocess Gemed - Tecnologia em Saúde
 alumni_of:
-  name: PUCRS — Pontifícia Universidade Católica do Rio Grande do Sul
+  name: Pontifícia Universidade Católica do Rio Grande do Sul (PUCRS)
   url: https://www.pucrs.br
 same_as:
   - https://www.linkedin.com/in/vagneribas/
@@ -52,3 +52,7 @@ knows_about:
   - Model Context Protocol (MCP)
   - Scrum
   - Agile Methodologies
+  - Open Source
+  - Free Software
+  - Tech Community Management
+  - Mentoring

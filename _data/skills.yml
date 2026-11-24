@@ -31,6 +31,6 @@
   items_es: [Métodos ágiles, Scrum, Design Thinking, Design Sprint, Lean Inception, Kanban, Método Kanban, Accesibilidad, Discovery y Refinamiento]
 
 - group: { pt: Idiomas, en: Languages, es: Idiomas }
-  items_pt: [Português — nativo, Inglês — intermediário, Espanhol — básico]
-  items_en: [Portuguese — native, English — intermediate, Spanish — basic]
-  items_es: [Portugués — nativo, Inglés — intermedio, Español — básico]
+  items_pt: [Português (nativo), Inglês (intermediário), Espanhol (básico)]
+  items_en: [Portuguese (native), English (intermediate), Spanish (basic)]
+  items_es: [Portugués (nativo), Inglés (intermedio), Español (básico)]

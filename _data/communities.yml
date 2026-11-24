@@ -1,0 +1,46 @@
+# Tech communities timeline shown on the Bio page (pt / en / es). Oldest first.
+
+- year: "2010"
+  name: Matehackers
+  text:
+    pt: Ajudei e colaborei na criação do hackerspace Matehackers, o segundo hackerspace do Brasil, que existe até hoje no Vila Flores, em Porto Alegre.
+    en: Helped create the Matehackers hackerspace, the second hackerspace in Brazil, still active today at Vila Flores, in Porto Alegre.
+    es: Ayudé y colaboré en la creación del hackerspace Matehackers, el segundo hackerspace de Brasil, que sigue activo hasta hoy en Vila Flores, Porto Alegre.
+
+- year: "2012"
+  name: Mozilla
+  text:
+    pt: Mozillian voluntário, ajudando a comunidade que usava o navegador Firefox e as ferramentas da Mozilla.
+    en: Volunteer Mozillian, helping the community of people using the Firefox browser and Mozilla's tools.
+    es: Mozillian voluntario, ayudando a la comunidad que usaba el navegador Firefox y las herramientas de Mozilla.
+
+- year: "2013"
+  name: GUMobile RS
+  text:
+    pt: Ajudei e colaborei na criação do GUMobile RS, grupo de usuários de desenvolvimento mobile do Rio Grande do Sul.
+    en: Helped create GUMobile RS, the mobile development user group of Rio Grande do Sul.
+    es: Ayudé y colaboré en la creación de GUMobile RS, grupo de usuarios de desarrollo móvil de Rio Grande do Sul.
+
+- year: "2018"
+  name: GUIX (SUCESU RS)
+  text:
+    pt: Ajudei a ativar o GUIX, grupo de UX e UI da SUCESU RS.
+    en: Helped activate GUIX, the UX and UI group of SUCESU RS.
+    es: Ayudé a activar GUIX, el grupo de UX y UI de SUCESU RS.
+
+- year: "2019"
+  name: GUFERS e ARGU
+  text:
+    pt: Ajudei a criar o GUFERS, grupo de front end do RS, e o ARGU, grupo de arquitetura de software.
+    en: Helped create GUFERS, the front end group of Rio Grande do Sul, and ARGU, a software architecture group.
+    es: Ayudé a crear GUFERS, grupo de front end de Rio Grande do Sul, y ARGU, grupo de arquitectura de software.
+
+- year:
+    pt: Hoje
+    en: Today
+    es: Hoy
+  name: GUMA RS
+  text:
+    pt: Coordenador do GUMA RS.
+    en: Coordinator of GUMA RS.
+    es: Coordinador de GUMA RS.

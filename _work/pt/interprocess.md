@@ -9,7 +9,7 @@ cover: /assets/images/work/interprocess/1.png
 cover_position: "50% 0%"
 images:
   - /assets/images/work/interprocess/1.png
-caption: "Tela do prontuário — protótipo de alta fidelidade no Figma."
+caption: "Tela do prontuário, protótipo de alta fidelidade no Figma."
 description: "Product Designer no GEMED 2.1, sistema da Interprocess para a gestão de clínicas e hospitais, com foco especial no tratamento oncológico."
 mockup:
   type: laptop

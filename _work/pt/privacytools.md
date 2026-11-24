@@ -1,7 +1,7 @@
 ---
 ref: privacytools
 title: "PrivacyTools"
-headline: "Maven · PrivacyTools — MVP, marca e experiência"
+headline: "Maven · PrivacyTools: MVP, marca e experiência"
 role: "UX Designer / Product Designer"
 year: 2019
 order: 7

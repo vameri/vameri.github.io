@@ -15,7 +15,7 @@
       <strong>{% if work_doc %}<a href="{{ work_doc.url }}">{{ title }}</a>{% else %}{{ title }}{% endif %}</strong>
       <span class="when">
         {%- include period.html date=role.start t=t -%}
-        {%- if role.end and role.end != role.start %} – {% include period.html date=role.end t=t %}{% endif -%}
+        {%- if role.end and role.end != role.start %} - {% include period.html date=role.end t=t %}{% endif -%}
         {%- if role.type %} &middot; {{ t[role.type] }}{% endif -%}
         {%- if role.city %} &middot; {{ role.city }}{% endif -%}
         {%- if role.remote %} &middot; {{ t.remote }}{% endif -%}

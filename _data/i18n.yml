@@ -1,9 +1,11 @@
 # Interface strings per language. Portuguese (pt) is the default.
 pt:
+  theme_dark: Ativar modo escuro
+  theme_light: Ativar modo claro
   seo_title: "Vagner Ribas | Product Designer, Front End e Product Engineer · Especialista em IA"
   seo_description: "Product Designer, Desenvolvedor Front End e Product Engineer especialista em IA em Porto Alegre. UX, Discovery, Design Systems, React e IA em produtos digitais."
   hero_title: Product Designer, Desenvolvedor Front End e Product Engineer especialista em IA.
-  hero_text: "Sou Vagner Ribas, de Porto Alegre, Brasil. Crio produtos digitais de ponta a ponta — do Discovery e UX ao Design System, front end e soluções com Inteligência Artificial."
+  hero_text: "Sou Vagner Ribas, de Porto Alegre, Brasil. Crio produtos digitais de ponta a ponta: do Discovery e UX ao Design System, front end e soluções com Inteligência Artificial."
   hero_about: Sobre mim
   case: Case
   og_image: /assets/images/og/og-pt.png
@@ -38,10 +40,12 @@ pt:
   cv_note: ""
 
 en:
+  theme_dark: Switch to dark mode
+  theme_light: Switch to light mode
   seo_title: "Vagner Ribas | Product Designer, Front End Developer & Product Engineer · AI Specialist"
   seo_description: "Product Designer, Front End Developer and Product Engineer specialized in AI, based in Porto Alegre, Brazil. UX, Discovery, Design Systems, React and AI products."
   hero_title: Product Designer, Front End Developer and Product Engineer specialized in AI.
-  hero_text: "I'm Vagner Ribas, from Porto Alegre, Brazil. I build digital products end to end — from Discovery and UX to Design Systems, front end and AI-powered solutions."
+  hero_text: "I'm Vagner Ribas, from Porto Alegre, Brazil. I build digital products end to end: from Discovery and UX to Design Systems, front end and AI-powered solutions."
   hero_about: About me
   case: Case study
   og_image: /assets/images/og/og-en.png
@@ -76,10 +80,12 @@ en:
   cv_note: In Portuguese.
 
 es:
+  theme_dark: Activar modo oscuro
+  theme_light: Activar modo claro
   seo_title: "Vagner Ribas | Product Designer, Front End y Product Engineer · Especialista en IA"
   seo_description: "Product Designer, Desarrollador Front End y Product Engineer especialista en IA en Porto Alegre, Brasil. UX, Discovery, Design Systems, React e IA en productos digitales."
   hero_title: Product Designer, Desarrollador Front End y Product Engineer especialista en IA.
-  hero_text: "Soy Vagner Ribas, de Porto Alegre, Brasil. Creo productos digitales de punta a punta — desde Discovery y UX hasta Design Systems, front end y soluciones con Inteligencia Artificial."
+  hero_text: "Soy Vagner Ribas, de Porto Alegre, Brasil. Creo productos digitales de punta a punta: desde Discovery y UX hasta Design Systems, front end y soluciones con Inteligencia Artificial."
   hero_about: Sobre mí
   case: Caso
   og_image: /assets/images/og/og-es.png

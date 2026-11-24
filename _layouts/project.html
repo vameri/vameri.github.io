@@ -15,12 +15,12 @@ section: work
   </header>
 
   {% if base.mockup %}
-  <div class="project-hero" style="--tile: {{ base.mockup.bg }};" role="img" aria-label="{{ page.title }} — {{ page.headline }}">
+  <div class="project-hero" style="--tile: {{ base.mockup.bg }};" role="img" aria-label="{{ page.title }}: {{ page.headline }}">
     {% include mockup.html mockup=base.mockup %}
   </div>
   {% elsif base.cover %}
   <figure class="project-figure">
-    <img src="{{ base.cover }}" alt="{{ page.title }} — {{ page.caption | default: page.headline }}">
+    <img src="{{ base.cover }}" alt="{{ page.title }}: {{ page.caption | default: page.headline }}">
     {% if page.caption %}<figcaption>{{ page.caption }}</figcaption>{% endif %}
   </figure>
   {% endif %}
@@ -38,7 +38,7 @@ section: work
   <div class="project-gallery">
     {% for img in extra %}
     <figure class="project-figure">
-      <img src="{{ img }}" alt="{{ page.title }} — {{ t.screen }} {{ forloop.index }}" loading="lazy">
+      <img src="{{ img }}" alt="{{ page.title }}, {{ t.screen }} {{ forloop.index }}" loading="lazy">
       {% if forloop.first and page.caption and base.mockup %}<figcaption>{{ page.caption }}</figcaption>{% endif %}
     </figure>
     {% endfor %}

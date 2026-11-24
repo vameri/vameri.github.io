@@ -6,7 +6,7 @@ role: "Product Designer and Fullstack Developer"
 description: "Crowdfunding startup for comics and independent publishing: I created the visual identity, prototypes, front end and back end (PHP, Laravel, PostgreSQL, Vue.js), using AI for planning and ideation."
 ---
 
-Origo is a crowdfunding startup focused on comics and independent publishing — comics, creator-owned works, books, manga, zines, RPG and events. The platform connects creators and publishers with backers through crowdfunding campaigns and a store for titles that have already been published.
+Origo is a crowdfunding startup focused on comics and independent publishing: comics, creator-owned works, books, manga, zines, RPG and events. The platform connects creators and publishers with backers through crowdfunding campaigns and a store for titles that have already been published.
 
 I worked on the project end to end, from brand to code: I created the visual identity, designed the prototypes, built the front end and the back end, and followed the evolution of the product.
 
@@ -22,7 +22,7 @@ I worked on the project end to end, from brand to code: I created the visual ide
 
 ### AI in the product process
 
-I used Artificial Intelligence — Gemini, Claude and ChatGPT — to support planning and ideation: exploring feature ideas, organizing scope and priorities, structuring flows and content, and speeding up product and development decisions, always with human validation of the final choices.
+I used Artificial Intelligence (Gemini, Claude and ChatGPT) to support planning and ideation: exploring feature ideas, organizing scope and priorities, structuring flows and content, and speeding up product and development decisions, always with human validation of the final choices.
 
 ### Technologies
 

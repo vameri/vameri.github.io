@@ -14,7 +14,7 @@
 {%- elsif page.seo_title -%}
   {%- assign seo_title = page.seo_title -%}
 {%- elsif is_project -%}
-  {%- assign seo_title = page.title | append: ": " | append: page.role | append: " — " | append: t.case | append: " | " | append: seo.name -%}
+  {%- assign seo_title = page.title | append: ": " | append: page.role | append: " · " | append: t.case | append: " | " | append: seo.name -%}
 {%- else -%}
   {%- assign seo_title = page.title | append: " | " | append: seo.name -%}
 {%- endif -%}
@@ -59,7 +59,7 @@
     {%- endif %}
     {%- endfor %}
     {%- endif %}
-    <link rel="alternate" type="application/rss+xml" title="{{ seo.name }} — Blog" href="{{ base_url }}/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="{{ seo.name }} | Blog" href="{{ base_url }}/rss.xml">
 
     <meta property="og:site_name" content="{{ seo.name }}">
     <meta property="og:title" content="{{ seo_title | escape }}">
@@ -67,7 +67,7 @@
     <meta property="og:url" content="{{ page_url }}">
     <meta property="og:type" content="{% if is_post %}article{% elsif page.ref == 'about' or page.ref == 'bio' %}profile{% else %}website{% endif %}">
     <meta property="og:image" content="{{ base_url }}{{ og_image }}">
-    <meta property="og:image:alt" content="{{ seo.name }} — {{ seo.job_title[lang] }}">
+    <meta property="og:image:alt" content="{{ seo.name }}, {{ seo.job_title[lang] }}">
     <meta property="og:locale" content="{{ t.og_locale }}">
     {%- for l in site.languages %}{% if l != lang %}
     <meta property="og:locale:alternate" content="{{ site.data.i18n[l].og_locale }}">
@@ -142,7 +142,7 @@
         {
           "@type": "CreativeWork",
           "@id": "{{ page_url }}#work",
-          "name": {{ page.title | append: " — " | append: page.headline | jsonify }},
+          "name": {{ page.title | append: ": " | append: page.headline | jsonify }},
           "headline": {{ page.headline | jsonify }},
           "description": {{ page.description | strip_html | jsonify }},
           "url": "{{ page_url }}",

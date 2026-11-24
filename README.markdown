@@ -1,6 +1,6 @@
-# vameri.github.io — Vagner Ribas
+# vameri.github.io | Vagner Ribas
 
-Personal site and portfolio of **Vagner Ribas** — Product Designer, Front End Developer and Product Engineer specialized in AI.
+Personal site and portfolio of **Vagner Ribas**, Product Designer, Front End Developer and Product Engineer specialized in AI.
 
 Live: https://vameri.github.io (Portuguese, English and Spanish)
 
@@ -22,7 +22,7 @@ Open http://127.0.0.1:4000
 
 | What | Where |
 |---|---|
-| Case studies (pt / en / es) | `_work/pt`, `_work/en`, `_work/es` — media and mockups only in `pt` |
+| Case studies (pt / en / es) | `_work/pt`, `_work/en`, `_work/es` (media and mockups only in `pt`) |
 | Career history | `_data/experience.yml` |
 | Skills | `_data/skills.yml` |
 | Interface strings and SEO texts | `_data/i18n.yml` |

@@ -3,7 +3,7 @@ ref: interprocess
 title: "Interprocess"
 headline: "GEMED 2.1 · Sistema de Gestión para Clínicas y Hospitales"
 role: "Product Designer"
-caption: "Pantalla de historia clínica — prototipo de alta fidelidad en Figma."
+caption: "Pantalla de historia clínica, prototipo de alta fidelidad en Figma."
 description: "Product Designer en GEMED 2.1, sistema desarrollado por Interprocess para apoyar la gestión de clínicas y hospitales, con foco especial en el tratamiento oncológico."
 ---
 

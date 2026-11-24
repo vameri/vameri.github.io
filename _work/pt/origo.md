@@ -21,7 +21,7 @@ gallery:
 description: "Startup de crowdfunding para quadrinhos e publicações independentes: criei a identidade visual, os protótipos, o front end e o back end (PHP, Laravel, PostgreSQL, Vue.js), usando IA no planejamento e na ideação."
 ---
 
-A Origo é uma startup de crowdfunding voltada para quadrinhos e publicações independentes — quadrinhos, autorais, livros, mangás, zines, RPG e eventos. A plataforma conecta criadores e editoras a apoiadores por meio de campanhas de financiamento coletivo e de uma loja para a venda de títulos já publicados.
+A Origo é uma startup de crowdfunding voltada para quadrinhos e publicações independentes: quadrinhos, autorais, livros, mangás, zines, RPG e eventos. A plataforma conecta criadores e editoras a apoiadores por meio de campanhas de financiamento coletivo e de uma loja para a venda de títulos já publicados.
 
 Atuei no projeto de ponta a ponta, da marca ao código: criei a identidade visual, desenhei os protótipos, desenvolvi o front end e o back end e acompanhei a evolução do produto.
 
@@ -37,7 +37,7 @@ Atuei no projeto de ponta a ponta, da marca ao código: criei a identidade visua
 
 ### IA no processo de produto
 
-Usei Inteligência Artificial — Gemini, Claude e ChatGPT — como apoio no planejamento e na ideação do projeto: explorar ideias de funcionalidades, organizar o escopo e as prioridades, estruturar fluxos e conteúdos e acelerar decisões de produto e de desenvolvimento, sempre com validação humana nas escolhas finais.
+Usei Inteligência Artificial (Gemini, Claude e ChatGPT) como apoio no planejamento e na ideação do projeto: explorar ideias de funcionalidades, organizar o escopo e as prioridades, estruturar fluxos e conteúdos e acelerar decisões de produto e de desenvolvimento, sempre com validação humana nas escolhas finais.
 
 ### Tecnologias
 
