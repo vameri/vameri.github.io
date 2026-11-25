@@ -464,7 +464,6 @@
       '<p class="bh-big">' + fmt(S.result, game.killed) + '</p>' +
       '<p class="bh-sub">' + S.score + ': <b>' + game.score + '</b> &middot; ' + S.sprint + ' ' + game.sprint +
         (isBest ? ' &middot; <b class="bh-new">' + S.new_best + '</b>' : ' &middot; ' + S.best + ': ' + Math.max(game.best, game.score)) + '</p>' +
-      '<p class="bh-cta">' + S.cta + '</p>' +
       '<div class="bh-actions">' +
         '<button type="button" class="bh-btn" data-act="again">' + S.again + '</button>' +
         '<a class="bh-btn bh-btn--ghost" href="' + opts.whatsapp + '" target="_blank" rel="noopener noreferrer">' + S.whatsapp + '</a>' +

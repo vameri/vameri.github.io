@@ -1019,7 +1019,6 @@ body.menu-open .game-launcher,
 .bh-title { margin: 0; font-size: 34px; }
 .bh-sub { margin: 0; max-width: 440px; color: var(--text); }
 .bh-big { margin: 0; font-size: 20px; font-weight: 700; color: var(--heading); }
-.bh-cta { margin: 4px 0 0; font-weight: 600; color: var(--heading); }
 .bh-new { color: #e8618c; }
 .bh-touch { margin: 0; font-size: 14px; color: var(--soft); }
 .bh-hint { margin: 0; font-size: 13px; color: var(--soft); }
