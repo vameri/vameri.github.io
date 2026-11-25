@@ -79,6 +79,7 @@
     </main>
 
     {% include whatsapp.html %}
+    {% include game.html %}
 
     <footer class="footer">
       <div class="footer-container">
@@ -135,12 +136,31 @@
           }
         }
 
-        // Keep the WhatsApp button above the footer so it never covers its links
+        // Keep the floating buttons above the footer so they never cover its links
         var footer = document.querySelector('.footer');
         function liftWhatsApp() {
-          if (!wa || !footer) return;
+          if (!footer) return;
           var overlap = window.innerHeight - footer.getBoundingClientRect().top;
-          wa.style.setProperty('--wa-lift', Math.max(0, overlap) + 'px');
+          document.documentElement.style.setProperty('--float-lift', Math.max(0, overlap) + 'px');
+        }
+
+        // Bug Hunt: load the game only when someone asks to play
+        var gameBtn = document.querySelector('.game-launcher');
+        if (gameBtn) {
+          gameBtn.addEventListener('click', function () {
+            var open = function () {
+              window.BugHunt.open({
+                strings: JSON.parse(gameBtn.getAttribute('data-game')),
+                whatsapp: gameBtn.getAttribute('data-whatsapp'),
+                cv: gameBtn.getAttribute('data-cv')
+              });
+            };
+            if (window.BugHunt) return open();
+            var sc = document.createElement('script');
+            sc.src = gameBtn.getAttribute('data-src');
+            sc.onload = open;
+            document.body.appendChild(sc);
+          });
         }
 
         function onScroll() {
