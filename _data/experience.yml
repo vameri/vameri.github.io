@@ -3,7 +3,7 @@
 #
 # start / end: "YYYY-MM" or "YYYY"; end: present for the current role.
 # type: full_time | part_time | internship   ·   remote: true
-# source: linkedin (confirmed) | cv (CV_Vagner_Ribas.pdf) | bio (old site bio)
+# source: linkedin (confirmed) | cv (CV_Vagner_Ribas.pdf) | bio (old site bio) | user (told directly)
 
 - company: Interprocess Gemed - Tecnologia em Saúde
   source: linkedin
@@ -133,6 +133,18 @@
     - title: { pt: Web Designer, en: Web Designer, es: Web Designer }
       start: "2014-03"
       end: "2017-04"
+
+- company: El Pasito
+  source: user
+  roles:
+    - title: { pt: Sócio e cozinheiro, en: Partner and cook, es: Socio y cocinero }
+      start: "2014"
+      end: "2017"
+      city: Cidade Baixa, Porto Alegre
+      summary:
+        pt: "Bar e restaurante na Cidade Baixa, em Porto Alegre: um espaço vegano e cultural, com apresentações artísticas, eventos e festas. Fui sócio e, por um período, cozinheiro da casa."
+        en: "Bar and restaurant in Cidade Baixa, Porto Alegre: a vegan and cultural space that hosted artistic performances, events and parties. I was a partner and, for a period, the cook."
+        es: "Bar y restaurante en Cidade Baixa, Porto Alegre: un espacio vegano y cultural, con presentaciones artísticas, eventos y fiestas. Fui socio y, por un período, cocinero de la casa."
 
 - company: Le Bistro Restaurant
   source: bio
