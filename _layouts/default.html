@@ -78,6 +78,8 @@
       {{ content }}
     </main>
 
+    {% include whatsapp.html %}
+
     <footer class="footer">
       <div class="footer-container">
         <p class="copyright">Vagner Ribas &copy; {{ site.time | date: "%Y" }}</p>
@@ -119,8 +121,34 @@
           applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
         });
 
-        function onScroll() { header.classList.toggle('is-scrolled', window.scrollY > 10); }
+        // WhatsApp: show the "let's talk" hint once per visit, then hide it
+        var wa = document.querySelector('.wa-float');
+        if (wa) {
+          var seen = false;
+          try { seen = sessionStorage.getItem('waHint') === '1'; } catch (e) {}
+          if (!seen) {
+            setTimeout(function () {
+              wa.classList.add('is-hinting');
+              try { sessionStorage.setItem('waHint', '1'); } catch (e) {}
+              setTimeout(function () { wa.classList.remove('is-hinting'); }, 4000);
+            }, 2500);
+          }
+        }
+
+        // Keep the WhatsApp button above the footer so it never covers its links
+        var footer = document.querySelector('.footer');
+        function liftWhatsApp() {
+          if (!wa || !footer) return;
+          var overlap = window.innerHeight - footer.getBoundingClientRect().top;
+          wa.style.setProperty('--wa-lift', Math.max(0, overlap) + 'px');
+        }
+
+        function onScroll() {
+          header.classList.toggle('is-scrolled', window.scrollY > 10);
+          liftWhatsApp();
+        }
         window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', liftWhatsApp);
         onScroll();
       })();
     </script>

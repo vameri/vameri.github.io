@@ -1,5 +1,7 @@
 # Interface strings per language. Portuguese (pt) is the default.
 pt:
+  whatsapp_label: "Vamos conversar?"
+  whatsapp_message: "Olá, Vagner! Vi seu portfólio e gostaria de conversar."
   theme_dark: Ativar modo escuro
   theme_light: Ativar modo claro
   seo_title: "Vagner Ribas | Product Designer, Front End e Product Engineer · Especialista em IA"
@@ -40,6 +42,8 @@ pt:
   cv_note: ""
 
 en:
+  whatsapp_label: "Let's talk?"
+  whatsapp_message: "Hi Vagner! I saw your portfolio and would like to talk."
   theme_dark: Switch to dark mode
   theme_light: Switch to light mode
   seo_title: "Vagner Ribas | Product Designer, Front End Developer & Product Engineer · AI Specialist"
@@ -80,6 +84,8 @@ en:
   cv_note: In Portuguese.
 
 es:
+  whatsapp_label: "¿Conversamos?"
+  whatsapp_message: "¡Hola, Vagner! Vi tu portafolio y me gustaría conversar."
   theme_dark: Activar modo oscuro
   theme_light: Activar modo claro
   seo_title: "Vagner Ribas | Product Designer, Front End y Product Engineer · Especialista en IA"
