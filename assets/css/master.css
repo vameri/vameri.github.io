@@ -1037,6 +1037,36 @@ kbd.bh-wide { min-width: 64px; }
   .bh-hint--touch { display: block; }
 }
 .bh-tools { display: flex; gap: 8px; flex: none; }
+
+/* Bomb: bottom-right corner of the playfield */
+.bh-bomb {
+  position: absolute;
+  right: calc(50% - var(--bh-w, 100%) / 2 + 12px);
+  bottom: calc(50% - var(--bh-h, 100%) / 2 + 14px);
+  z-index: 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; padding: 0;
+  border: 0; border-radius: 50%;
+  background: var(--heading); color: var(--on-heading);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+  cursor: pointer;
+  opacity: .92;
+  transition: opacity .2s ease, transform .15s ease;
+}
+.bh-bomb[hidden] { display: none; }
+.bh-bomb:hover { transform: scale(1.06); }
+.bh-bomb:active { transform: scale(.94); }
+.bh-bomb.is-off { opacity: .3; }
+.bh-bomb__cost {
+  position: absolute; top: -4px; right: -6px;
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 1px 6px; border-radius: 10px;
+  background: #e8618c; color: #fff;
+  font: 700 11px/1.4 var(--font);
+}
+.bh-bomb__cost .bh-life { border-left-width: 4px; border-right-width: 4px; border-bottom-width: 7px; }
+.is-touch .bh-bomb { width: 60px; height: 60px; }
+.is-touch .bh-bomb svg { width: 26px; height: 26px; }
 .bh-close[hidden] { display: none; }
 @media (max-width: 420px) {
   .bh-best { display: none; }

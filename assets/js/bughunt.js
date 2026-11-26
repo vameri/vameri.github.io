@@ -16,6 +16,8 @@
   var EXTRA_LIFE_EVERY = 1500, MAX_LIVES = 5;
   var MAX_SHOTS = 3, SHOT_COOLDOWN = 0.16;     // player shots on screen at once / time between shots
   var TOUCH_PACE = 0.75;                      // touch screens: bugs and their fire run slower
+  var POWER_TIME = 8;                         // seconds of boosted shots after hitting the coffee
+  var BOMB_COOLDOWN = 2.5;                    // seconds between bombs
   var BEST_KEY = 'bughuntBest';
 
   var S, opts, root, panel, canvas, ctx, hud, screens, lastFocus, themeBtn;
@@ -23,7 +25,7 @@
   var keys = {}, touchActive = false, touchX = null, isTouch = false;
   var drag = null;                            // { id, x0, p0, k }: finger drag, relative to where it started
   var DRAG_GAIN = 1.35;                       // finger travel -> pizza travel (no need to cross the whole screen)
-  var pauseBtn;
+  var pauseBtn, bombBtn;
   var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var stars = [];
   var game;
@@ -97,7 +99,10 @@
     sprint:    function () { melody([392, 523, 659, 784], 0.09, 'triangle', 0.3); },
     clear:     function () { melody([523, 659, 784, 1046, 1318], 0.08, 'square', 0.2); },
     life:      function () { melody([784, 988, 1318, 1568], 0.07, 'triangle', 0.3); },
-    over:      function () { melody([523, 440, 349, 262, 196], 0.18, 'triangle', 0.32); }
+    over:      function () { melody([523, 440, 349, 262, 196], 0.18, 'triangle', 0.32); },
+    bomb:      function () { noise(0.8, 0.8, 420); tone(140, 0.7, 'sawtooth', 0.4, 35); },
+    power:     function () { melody([523, 784, 1046, 1568, 2093], 0.05, 'square', 0.2); },
+    nope:      function () { tone(180, 0.12, 'square', 0.18, 120); }
   };
 
   // Wobbling hum while the coffee "hotfix" crosses the top of the screen
@@ -159,7 +164,8 @@
     var w = spaceWord();
     return '<ul class="bh-keys">' +
       '<li><kbd>&larr;</kbd><kbd>&rarr;</kbd> <span>' + w.or + '</span> <kbd>A</kbd><kbd>D</kbd> ' + S.move + '</li>' +
-      '<li><kbd class="bh-wide">' + w.key + '</kbd> ' + S.shoot + '</li>' +
+      '<li><kbd>W</kbd><kbd>S</kbd> <span>' + w.or + '</span> <kbd>&uarr;</kbd> ' + S.shoot + '</li>' +
+      '<li><kbd>B</kbd> ' + S.bomb + '</li>' +
       '<li><kbd>P</kbd> ' + S.pause + '</li>' +
       '<li><kbd>Esc</kbd> ' + S.quit + '</li>' +
       '<li><kbd>M</kbd> ' + S.sound + '</li>' +
@@ -225,6 +231,18 @@
     canvas = el('canvas', 'bh-canvas');
     canvas.setAttribute('aria-hidden', 'true');
     stage.appendChild(canvas);
+    bombBtn = el('button', 'bh-bomb',
+      '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="10.5" cy="14" r="7" fill="currentColor"/>' +
+      '<path d="M14.5 9.5l2.5-2.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<path d="M17.5 6c.6-1.6 2.2-2 3.3-1.2" stroke="#f2a541" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="8" cy="11.5" r="1.6" fill="#fff" opacity=".45"/></svg>' +
+      '<span class="bh-bomb__cost" aria-hidden="true">&minus;1<span class="bh-life"></span></span>');
+    bombBtn.type = 'button';
+    bombBtn.hidden = true;
+    bombBtn.setAttribute('aria-label', S.bomb_button);
+    bombBtn.title = S.bomb_button + ' (B)';
+    bombBtn.addEventListener('click', function () { dropBomb(); panel.focus({ preventScroll: true }); });
+    stage.appendChild(bombBtn);
 
     screens = {
       start: el('div', 'bh-screen',
@@ -252,7 +270,7 @@
     });
 
     var legend = el('p', 'bh-legend',
-      '<kbd>&larr;</kbd><kbd>&rarr;</kbd> ' + S.move + ' &middot; <kbd class="bh-wide">' + w.key + '</kbd> ' + S.shoot +
+      '<kbd>&larr;</kbd><kbd>&rarr;</kbd> ' + S.move + ' &middot; <kbd>W</kbd><kbd>&uarr;</kbd> ' + S.shoot + ' &middot; <kbd>B</kbd> ' + S.bomb +
       ' &middot; <kbd>P</kbd> ' + S.pause + ' &middot; <kbd>M</kbd> ' + S.sound + ' &middot; <kbd>Esc</kbd> ' + S.quit);
 
     panel.appendChild(top);
@@ -274,10 +292,20 @@
   function syncPauseBtn() {
     if (!pauseBtn) return;
     pauseBtn.hidden = state !== 'play' && state !== 'paused';
+    if (bombBtn) bombBtn.hidden = state !== 'play';
+    syncBombBtn();
     var label = state === 'paused' ? S.resume : S.pause_button;
     pauseBtn.innerHTML = state === 'paused' ? PLAY_ICON : PAUSE_ICON;
     pauseBtn.setAttribute('aria-label', label);
     pauseBtn.title = label + ' (P)';
+  }
+
+  function bombReady() { return game && state === 'play' && game.lives >= 2 && game.bombCool <= 0 && game.introT <= 0; }
+
+  function syncBombBtn() {
+    if (!bombBtn || bombBtn.hidden) return;
+    var ready = !!bombReady();
+    if (bombBtn._ready !== ready) { bombBtn._ready = ready; bombBtn.classList.toggle('is-off', !ready); }
   }
 
   function showScreen(name) {
@@ -288,6 +316,7 @@
   }
 
   function renderHud() {
+    syncBombBtn();
     var lives = '';
     for (var i = 0; i < game.lives; i++) lives += '<span class="bh-life" aria-hidden="true"></span>';
     hud.innerHTML =
@@ -403,7 +432,7 @@
   /* ---------- Game state ---------- */
 
   function newGame() {
-    game = { score: 0, sprint: 1, lives: 3, killed: 0, best: readBest(), nextLife: EXTRA_LIFE_EVERY, msg: '', msgT: 0, texts: [] };
+    game = { score: 0, sprint: 1, lives: 3, killed: 0, best: readBest(), nextLife: EXTRA_LIFE_EVERY, msg: '', msgT: 0, texts: [], power: 0, bombCool: 0, flash: 0 };
     game.player = { x: W / 2, y: H - 34, w: 34, h: 36, inv: 0, cool: 0 };
     placeShields(true);
     newSprint();
@@ -523,8 +552,9 @@
 
     // Player movement: keyboard or finger position
     var dx = 0;
-    if (keys.left) dx -= 1;
-    if (keys.right) dx += 1;
+    if (keys.left && keys.right) dx = keys.last === 'left' ? -1 : 1;
+    else if (keys.left) dx = -1;
+    else if (keys.right) dx = 1;
     if (dx) { p.x += dx * speed * dt; touchX = null; }
     else if (touchX != null) {
       var diff = touchX - p.x;
@@ -539,22 +569,28 @@
     game.parts.forEach(function (q) { q.x += q.vx * dt; q.y += q.vy * dt; q.vy += 260 * dt; q.life -= dt; });
     game.parts = game.parts.filter(function (q) { return q.life > 0; });
     if (game.msgT > 0) game.msgT -= dt;
+    if (game.flash > 0) game.flash -= dt;
+    if (game.bombCool > 0) game.bombCool -= dt;
+    if (game.power > 0) game.power = Math.max(0, game.power - dt);
+    syncBombBtn();
 
     // Short pause at the start of each sprint
     if (game.introT > 0) { game.introT -= dt; return; }
 
     // Shooting: up to MAX_SHOTS on screen. On touch screens it fires non-stop, so the only thing to do is move.
+    // While the coffee boost lasts: big shots, more of them, they pierce bugs and ignore firewalls/enemy fire.
     p.cool -= dt;
-    if ((keys.fire || isTouch) && p.cool <= 0 && game.shots.length < MAX_SHOTS) {
-      game.shots.push({ x: p.x, y: p.y - p.h / 2, v: 600 });
-      p.cool = SHOT_COOLDOWN;
+    var big = game.power > 0;
+    if ((keys.fire || isTouch) && p.cool <= 0 && game.shots.length < (big ? MAX_SHOTS + 3 : MAX_SHOTS)) {
+      game.shots.push({ x: p.x, y: p.y - p.h / 2, v: big ? 720 : 600, big: big, hits: 0 });
+      p.cool = big ? SHOT_COOLDOWN * 0.6 : SHOT_COOLDOWN;
       sfx.shoot();
     }
     game.shots.forEach(function (s) { s.py = s.y; s.y -= s.v * dt; });
     game.shots = game.shots.filter(function (s) {
       if (s.y < -10) return false;
       // with auto-fire, own shots pass through the firewalls instead of wearing them down
-      if (!isTouch && hitShield(s.x, s.py, s.y)) { sfx.block(); return false; }
+      if (!isTouch && !s.big && hitShield(s.x, s.py, s.y)) { sfx.block(); return false; }
       return true;
     });
 
@@ -600,7 +636,11 @@
     // Player shot vs enemy shot (they cancel out)
     game.shots.forEach(function (s) {
       game.enemyShots.forEach(function (es) {
-        if (Math.abs(s.x - es.x) < 6 && Math.abs(s.y - es.y) < 12) { s.y = -100; es.y = H + 100; burst(es.x, es.y, css('--accent'), 5); }
+        if (Math.abs(s.x - es.x) < (s.big ? 14 : 6) && Math.abs(s.y - es.y) < 12) {
+          burst(es.x, es.y, css('--accent'), 5);
+          es.y = H + 100;
+          if (!s.big) s.y = -100;               // boosted shots plough through enemy fire
+        }
       });
     });
 
@@ -623,13 +663,18 @@
         burst(game.ufo.x, game.ufo.y, '#d98a3a', 16);
         game.ufo = null; game.ufoTimer = 15 + Math.random() * 12; s.y = -100;
         sfx.hotfix();
+        sfx.power();
+        game.power = POWER_TIME;
+        game.msg = S.power_up; game.msgT = 1.4;
+        buzz(40);
         addScore(bonus);
         return;
       }
       for (var i = 0; i < alive.length; i++) {
         var b = alive[i];
-        if (b.alive && Math.abs(s.x - b.x) < 16 && Math.abs(s.y - b.y) < 14) {
-          b.alive = false; s.y = -100;
+        if (b.alive && Math.abs(s.x - b.x) < (s.big ? 24 : 16) && Math.abs(s.y - b.y) < 14) {
+          b.alive = false;
+          if (!s.big || ++s.hits >= 3) s.y = -100;   // a boosted shot goes through up to 3 bugs
           game.killed++;
           burst(b.x, b.y, ROW_COLORS[b.row % ROW_COLORS.length], 12);
           sfx.hit();
@@ -666,6 +711,40 @@
       newSprint();
       renderHud();
     }
+  }
+
+  // Bomb: trade a life for some breathing room. Wipes the two lowest rows of bugs and all enemy fire,
+  // pushes the swarm back up a row and gives a moment of invulnerability. Never spends the last life.
+  function dropBomb() {
+    if (!game || state !== 'play' || game.introT > 0) return;
+    if (!bombReady()) {
+      sfx.nope();
+      if (game.lives < 2) floatText(game.player.x, game.player.y - 44, S.bomb_need, '#e8618c');
+      return;
+    }
+    var p = game.player, alive = aliveBugs();
+    var maxY = -Infinity;
+    alive.forEach(function (b) { maxY = Math.max(maxY, b.y); });
+    game.lives--;
+    game.bombCool = BOMB_COOLDOWN;
+    alive.forEach(function (b) {
+      if (b.y < maxY - SPY * 1.5) return;
+      b.alive = false;
+      game.killed++;
+      burst(b.x, b.y, ROW_COLORS[b.row % ROW_COLORS.length], 10);
+      addScore(KIND_PTS[b.kind]);
+    });
+    game.enemyShots.forEach(function (es) { burst(es.x, es.y, css('--accent'), 3); });
+    game.enemyShots = [];
+    game.fy = Math.max(40, game.fy - SPY);
+    layoutBugs();
+    p.inv = Math.max(p.inv, 2);
+    game.flash = 0.45;
+    burst(p.x, p.y - 20, '#f2a541', 30);
+    floatText(W / 2, H / 2, S.bomb_boom, '#e8618c');
+    sfx.bomb();
+    buzz([40, 30, 140]);
+    renderHud();
   }
 
   function burst(x, y, color, n) {
@@ -706,8 +785,20 @@
     if (game.ufo) drawCoffee(game.ufo.x, game.ufo.y);
 
     // player shots: little cheese drops
-    ctx.fillStyle = '#f6c453';
-    game.shots.forEach(function (s) { roundRect(s.x - 2.5, s.y - 9, 5, 14, 2.5); ctx.fill(); });
+    game.shots.forEach(function (s) {
+      if (s.big) {
+        // boosted shot: a glowing hot drop
+        ctx.globalAlpha = 0.35; ctx.fillStyle = '#ff7a2f';
+        roundRect(s.x - 8, s.y - 15, 16, 28, 8); ctx.fill();
+        ctx.globalAlpha = 1; ctx.fillStyle = '#f6c453';
+        roundRect(s.x - 4.5, s.y - 12, 9, 22, 4.5); ctx.fill();
+        ctx.fillStyle = '#fff3c4';
+        roundRect(s.x - 1.5, s.y - 9, 3, 10, 1.5); ctx.fill();
+      } else {
+        ctx.fillStyle = '#f6c453';
+        roundRect(s.x - 2.5, s.y - 9, 5, 14, 2.5); ctx.fill();
+      }
+    });
 
     // enemy shots: zigzag "errors"
     ctx.strokeStyle = accent; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
@@ -718,6 +809,13 @@
 
     var p = game.player;
     if (!(p.inv > 0 && Math.floor(p.inv * 10) % 2 === 0)) drawPizza(p.x, p.y);
+    if (game.power > 0) {
+      // coffee boost timer above the pizza
+      ctx.fillStyle = '#d98a3a'; ctx.globalAlpha = 0.25;
+      roundRect(p.x - 20, p.y - 32, 40, 4, 2); ctx.fill();
+      ctx.globalAlpha = 1;
+      roundRect(p.x - 20, p.y - 32, 40 * game.power / POWER_TIME, 4, 2); ctx.fill();
+    }
 
     game.parts.forEach(function (q) { ctx.globalAlpha = Math.max(0, q.life * 1.8); ctx.fillStyle = q.color; ctx.fillRect(q.x - 2, q.y - 2, 4, 4); });
     ctx.globalAlpha = 1;
@@ -730,6 +828,13 @@
       ctx.fillText(t.text, t.x, t.y);
     });
     ctx.globalAlpha = 1;
+
+    if (game.flash > 0) {
+      ctx.globalAlpha = Math.min(0.6, game.flash * 1.3);
+      ctx.fillStyle = '#fff2d6';
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 1;
+    }
 
     if (game.msgT > 0 && state === 'play') {
       ctx.globalAlpha = Math.min(1, game.msgT * 1.5);
@@ -818,24 +923,31 @@
 
   /* ---------- Input ---------- */
 
+  // Keys are matched by physical position (e.code) too, so A/D/W/S/B work on any layout
   function onKey(e, down) {
     if (!root || root.hidden) return;
-    var k = e.key;
-    if (k === 'ArrowLeft' || k === 'a' || k === 'A') { keys.left = down; e.preventDefault(); }
-    else if (k === 'ArrowRight' || k === 'd' || k === 'D') { keys.right = down; e.preventDefault(); }
-    else if (k === ' ' || k === 'Spacebar') {
-      var onLink = e.target && e.target.closest && e.target.closest('a');
-      if (onLink) return;                       // let links (WhatsApp, CV) work normally
+    var k = e.key, c = e.code;
+    if (k === 'ArrowLeft' || c === 'KeyA') { keys.left = down; if (down) keys.last = 'left'; e.preventDefault(); }
+    else if (k === 'ArrowRight' || c === 'KeyD') { keys.right = down; if (down) keys.last = 'right'; e.preventDefault(); }
+    else if (k === 'ArrowUp' || c === 'KeyW' || c === 'KeyS') { keys.fire = down; e.preventDefault(); }
+    else if (k === ' ' || k === 'Spacebar' || k === 'Enter') {
+      var onControl = e.target && e.target.closest && e.target.closest('a, button');
+      if (onControl && e.target !== panel) return;   // let links and buttons work normally
       e.preventDefault();
-      if (state === 'start' || state === 'over') { if (down) startGame(); return; }
-      keys.fire = down;
+      if (state === 'start' || state === 'over') {
+        if (down && !e.repeat && (state === 'start' || performance.now() - (game.overAt || 0) > 700)) startGame();
+        return;
+      }
+      if (k !== 'Enter') keys.fire = down;            // Space still fires for those who like it
     }
-    else if (down && k === 'Enter' && state === 'start') { e.preventDefault(); startGame(); }
-    else if (down && (k === 'p' || k === 'P')) { e.preventDefault(); setPaused(state === 'play'); }
-    else if (down && (k === 'm' || k === 'M')) { e.preventDefault(); toggleSound(); }
+    else if (down && c === 'KeyB') { e.preventDefault(); if (!e.repeat) dropBomb(); }
+    else if (down && c === 'KeyP') { e.preventDefault(); setPaused(state === 'play'); }
+    else if (down && c === 'KeyM') { e.preventDefault(); toggleSound(); }
     else if (down && k === 'Escape') { e.preventDefault(); e.stopPropagation(); closeGame(); }
-    else if (k === 'ArrowUp' || k === 'ArrowDown') { e.preventDefault(); }
+    else if (k === 'ArrowDown') { e.preventDefault(); }
   }
+  // If the window loses focus mid-press the key-up never arrives; forget everything so no key stays stuck
+  function clearKeys() { keys = {}; }
   function onKeyDown(e) { onKey(e, true); }
   function onKeyUp(e) { onKey(e, false); }
 
@@ -892,6 +1004,7 @@
     document.documentElement.classList.add('bh-open');
     window.addEventListener('keydown', onKeyDown, true);
     window.addEventListener('keyup', onKeyUp, true);
+    window.addEventListener('blur', clearKeys);
     window.addEventListener('resize', resize);
     document.addEventListener('visibilitychange', onVisibility);
     if (window.matchMedia && matchMedia('(hover: none) and (pointer: coarse)').matches) setTouch();
@@ -921,6 +1034,7 @@
     document.documentElement.classList.remove('bh-open');
     window.removeEventListener('keydown', onKeyDown, true);
     window.removeEventListener('keyup', onKeyUp, true);
+    window.removeEventListener('blur', clearKeys);
     window.removeEventListener('resize', resize);
     document.removeEventListener('visibilitychange', onVisibility);
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
