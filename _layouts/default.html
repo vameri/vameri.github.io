@@ -15,6 +15,49 @@
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
+    {%- if translations %}
+    <script>
+      // Language: a choice made in the footer always wins. Otherwise, on the first visit we look up the
+      // visitor's country by IP: Portuguese- and Spanish-speaking countries get pt / es, everyone else en.
+      // Only pages that really exist in the other language redirect, and crawlers are never redirected.
+      (function () {
+        var page = '{{ lang }}';
+        var alts = { {%- for l in site.languages %}{% assign alt = translations | where: "lang", l | first %}{% if alt %}"{{ l }}": "{{ alt.url }}"{% unless forloop.last %}, {% endunless %}{% endif %}{% endfor -%} };
+        if (/bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(navigator.userAgent)) return;
+        function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+        function go(l) {
+          if (!l || l === page || !alts[l]) return false;
+          location.replace(alts[l] + location.search + location.hash);
+          return true;
+        }
+        var pick = get('lang') || get('geoLang');
+        if (pick) { go(pick); return; }
+
+        var PT = 'BR PT AO MZ CV GW ST TL', ES = 'ES MX AR CO CL PE VE EC GT CU BO DO HN PY SV NI CR PA UY PR GQ';
+        function fromCountry(c) { return !/^[A-Z]{2}$/.test(c) ? null : PT.indexOf(c) > -1 ? 'pt' : ES.indexOf(c) > -1 ? 'es' : 'en'; }
+        function fromBrowser() {
+          var ls = navigator.languages || [navigator.language || ''];
+          for (var i = 0; i < ls.length; i++) { var b = String(ls[i]).slice(0, 2).toLowerCase(); if (b === 'pt' || b === 'es') return b; }
+          return 'en';
+        }
+        // Hide the page while deciding (first visit only, at most 1.5s) so it doesn't flash in the wrong language
+        var root = document.documentElement, done = false;
+        root.style.visibility = 'hidden';
+        function finish(l, save) {
+          if (done) return;
+          done = true;
+          if (save) { try { localStorage.setItem('geoLang', l); } catch (e) {} }
+          if (!go(l)) root.style.visibility = '';
+        }
+        setTimeout(function () { finish(fromBrowser(), false); }, 1500);
+        if (!window.fetch) return finish(fromBrowser(), false);
+        fetch('https://get.geojs.io/v1/ip/country')
+          .then(function (r) { return r.text(); })
+          .then(function (c) { var l = fromCountry(c.trim()); finish(l || fromBrowser(), !!l); })
+          .catch(function () { finish(fromBrowser(), false); });
+      })();
+    </script>
+    {%- endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f5f5">
     <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
@@ -55,15 +98,6 @@
             <li><button type="button" class="main-menu__game" data-open-game aria-haspopup="dialog">{{ g.launcher_label }}</button></li>
           </ul>
 
-          <ul class="lang-switch" aria-label="{{ t.language }}">
-            {%- for l in site.languages %}
-            {%- assign tl = site.data.i18n[l] %}
-            {%- assign alt = nil %}
-            {%- if translations %}{% assign alt = translations | where: "lang", l | first %}{% endif %}
-            {%- if alt %}{% assign href = alt.url %}{% else %}{% assign href = tl.prefix | append: "/" %}{% endif %}
-            <li><a href="{{ href }}" hreflang="{{ tl.html_lang }}" lang="{{ tl.html_lang }}" title="{{ tl.name }}"{% if l == lang %} class="is-active" aria-current="true"{% endif %}>{{ tl.short }}</a></li>
-            {%- endfor %}
-          </ul>
 
           {% include social.html %}
         </nav>
@@ -85,7 +119,18 @@
 
     <footer class="footer">
       <div class="footer-container">
-        <p class="copyright">Vagner Ribas &copy; {{ site.time | date: "%Y" }}</p>
+        <div class="footer-meta">
+          <p class="copyright">Vagner Ribas &copy; {{ site.time | date: "%Y" }}</p>
+          <ul class="lang-switch" aria-label="{{ t.language }}">
+            {%- for l in site.languages %}
+            {%- assign tl = site.data.i18n[l] %}
+            {%- assign alt = nil %}
+            {%- if translations %}{% assign alt = translations | where: "lang", l | first %}{% endif %}
+            {%- if alt %}{% assign href = alt.url %}{% else %}{% assign href = tl.prefix | append: "/" %}{% endif %}
+            <li><a href="{{ href }}" hreflang="{{ tl.html_lang }}" lang="{{ tl.html_lang }}" data-set-lang="{{ l }}"{% if l == lang %} class="is-active" aria-current="true"{% endif %}>{{ tl.name }}</a></li>
+            {%- endfor %}
+          </ul>
+        </div>
         {% include social.html %}
       </div>
     </footer>
@@ -145,6 +190,11 @@
           var overlap = window.innerHeight - footer.getBoundingClientRect().top;
           document.documentElement.style.setProperty('--float-lift', Math.max(0, overlap) + 'px');
         }
+
+        // Language picked in the footer: remember it so the automatic choice never overrides it
+        Array.prototype.forEach.call(document.querySelectorAll('[data-set-lang]'), function (a) {
+          a.addEventListener('click', function () { try { localStorage.setItem('lang', a.getAttribute('data-set-lang')); } catch (e) {} });
+        });
 
         // Bug Hunt: load the game only when someone asks to play
         var gameCfg = document.querySelector('.bughunt-config');
