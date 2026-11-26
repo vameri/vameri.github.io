@@ -2,7 +2,12 @@
 {%- assign g = site.data.game[lang] | default: site.data.game.pt -%}
 {%- assign t = site.data.i18n[lang] -%}
 {%- capture wa_url -%}https://wa.me/{{ site.data.seo.whatsapp }}?text={{ t.whatsapp_message | uri_escape }}{%- endcapture -%}
-{%- comment -%} Settings for the Bug Hunt game; it opens from any [data-open-game] (menu, home hero) {%- endcomment -%}
-<div class="bughunt-config" hidden
-     data-game='{{ g | jsonify | replace: "'", "&#39;" }}' data-whatsapp="{{ wa_url }}" data-cv="/CV_Vagner_Ribas.pdf"
-     data-src="/assets/js/bughunt.js?v={{ site.time | date: '%s' }}"></div>
+{%- comment -%} Bug Hunt: the game mounts itself into .bughunt (see assets/js/bughunt.js) {%- endcomment -%}
+<section class="bh-page" aria-labelledby="bh-heading">
+  <h1 class="sr-only" id="bh-heading">{{ g.title }}</h1>
+  <div class="bughunt"
+       data-game='{{ g | jsonify | replace: "'", "&#39;" }}' data-whatsapp="{{ wa_url }}" data-cv="/CV_Vagner_Ribas.pdf">
+    <noscript><p class="bh-noscript">{{ g.noscript }}</p></noscript>
+  </div>
+</section>
+<script src="/assets/js/bughunt.js?v={{ site.time | date: '%s' }}" defer></script>

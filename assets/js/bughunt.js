@@ -2,7 +2,8 @@
  * Bug Hunt: a small original arcade game for vameri.github.io.
  * Waves of bugs march across the screen; the player (a pizza slice) shoots them,
  * hides behind firewalls and hits the occasional coffee "hotfix" for bonus points.
- * Vanilla JS + <canvas>, no dependencies. Loaded on demand from the menu or the home hero link.
+ * Vanilla JS + <canvas>, no dependencies. Lives on its own page (/jogos/, /en/games/, /es/juegos/)
+ * and mounts itself into the .bughunt element.
  */
 (function () {
   'use strict';
@@ -18,9 +19,11 @@
   var TOUCH_PACE = 0.75;                      // touch screens: bugs and their fire run slower
   var POWER_TIME = 8;                         // seconds of boosted shots after hitting the coffee
   var BOMB_COOLDOWN = 2.5;                    // seconds between bombs
+  var LATE_SPRINT = 6;                        // from this sprint: strong shot by default, bombs recharge, coffee = +1 life
+  var MAX_BOMBS = 3;                          // bomb charges held at once (late sprints)
   var BEST_KEY = 'bughuntBest';
 
-  var S, opts, root, panel, canvas, ctx, hud, screens, lastFocus, themeBtn;
+  var S, opts, root, panel, canvas, ctx, hud, screens;
   var raf = 0, running = false, state = 'start';
   var keys = {}, touchActive = false, touchX = null, isTouch = false;
   var drag = null;                            // { id, x0, p0, k }: finger drag, relative to where it started
@@ -99,6 +102,7 @@
     sprint:    function () { melody([392, 523, 659, 784], 0.09, 'triangle', 0.3); },
     clear:     function () { melody([523, 659, 784, 1046, 1318], 0.08, 'square', 0.2); },
     life:      function () { melody([784, 988, 1318, 1568], 0.07, 'triangle', 0.3); },
+    charge:    function () { melody([440, 660, 880], 0.06, 'triangle', 0.28); },
     over:      function () { melody([523, 440, 349, 262, 196], 0.18, 'triangle', 0.32); },
     bomb:      function () { noise(0.8, 0.8, 420); tone(140, 0.7, 'sawtooth', 0.4, 35); },
     power:     function () { melody([523, 784, 1046, 1568, 2093], 0.05, 'square', 0.2); },
@@ -166,39 +170,13 @@
       '<li><kbd>&larr;</kbd><kbd>&rarr;</kbd> <span>' + w.or + '</span> <kbd>A</kbd><kbd>D</kbd> ' + S.move + '</li>' +
       '<li><kbd>W</kbd><kbd>S</kbd> <span>' + w.or + '</span> <kbd>&uarr;</kbd> ' + S.shoot + '</li>' +
       '<li><kbd>B</kbd> ' + S.bomb + '</li>' +
-      '<li><kbd>P</kbd> ' + S.pause + '</li>' +
-      '<li><kbd>Esc</kbd> ' + S.quit + '</li>' +
+      '<li><kbd>P</kbd> <span>' + w.or + '</span> <kbd>Esc</kbd> ' + S.pause + '</li>' +
       '<li><kbd>M</kbd> ' + S.sound + '</li>' +
     '</ul>';
   }
 
-  var MOON = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
-  var SUN = '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-
-  function syncThemeBtn() {
-    if (!themeBtn) return;
-    var dark = isDark();
-    themeBtn.innerHTML = dark ? SUN : MOON;
-    var label = dark ? S.theme_light : S.theme_dark;
-    themeBtn.setAttribute('aria-label', label);
-    themeBtn.title = label;
-  }
-
-  function toggleTheme() {
-    var siteBtn = document.querySelector('.theme-toggle');
-    if (siteBtn) siteBtn.click();
-    else document.documentElement.setAttribute('data-theme', isDark() ? 'light' : 'dark');
-    syncThemeBtn();
-    draw();
-    panel.focus({ preventScroll: true });
-  }
-
   function build() {
     var w = spaceWord();
-    root = el('div', 'bh-overlay');
-    root.setAttribute('role', 'dialog');
-    root.setAttribute('aria-modal', 'true');
-    root.setAttribute('aria-label', S.title);
 
     panel = el('div', 'bh-panel');
     panel.tabIndex = -1;
@@ -206,14 +184,6 @@
     var top = el('div', 'bh-top');
     hud = el('div', 'bh-hud');
     var tools = el('div', 'bh-tools');
-    themeBtn = el('button', 'bh-close bh-theme');
-    themeBtn.type = 'button';
-    themeBtn.addEventListener('click', toggleTheme);
-    var close = el('button', 'bh-close', '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>');
-    close.type = 'button';
-    close.setAttribute('aria-label', S.close);
-    close.title = S.close;
-    close.addEventListener('click', closeGame);
     pauseBtn = el('button', 'bh-close bh-pause');
     pauseBtn.type = 'button';
     pauseBtn.addEventListener('click', function () { setPaused(state === 'play'); });
@@ -222,8 +192,6 @@
     soundBtn.addEventListener('click', function () { toggleSound(); panel.focus({ preventScroll: true }); });
     tools.appendChild(pauseBtn);
     tools.appendChild(soundBtn);
-    tools.appendChild(themeBtn);
-    tools.appendChild(close);
     top.appendChild(hud);
     top.appendChild(tools);
 
@@ -236,11 +204,9 @@
       '<path d="M14.5 9.5l2.5-2.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>' +
       '<path d="M17.5 6c.6-1.6 2.2-2 3.3-1.2" stroke="#f2a541" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
       '<circle cx="8" cy="11.5" r="1.6" fill="#fff" opacity=".45"/></svg>' +
-      '<span class="bh-bomb__cost" aria-hidden="true">&minus;1<span class="bh-life"></span></span>');
+      '<span class="bh-bomb__cost" aria-hidden="true"></span>');
     bombBtn.type = 'button';
     bombBtn.hidden = true;
-    bombBtn.setAttribute('aria-label', S.bomb_button);
-    bombBtn.title = S.bomb_button + ' (B)';
     bombBtn.addEventListener('click', function () { dropBomb(); panel.focus({ preventScroll: true }); });
     stage.appendChild(bombBtn);
 
@@ -250,6 +216,7 @@
         '<p class="bh-sub">' + S.subtitle + '</p>' +
         keysLegend() +
         '<p class="bh-touch">' + S.tips + '</p>' +
+        '<p class="bh-touch bh-late">' + S.late_tip + '</p>' +
         '<p class="bh-touch">' + S.touch + '</p>' +
         '<button type="button" class="bh-btn" data-act="start">' + S.start_button + '</button>' +
         '<p class="bh-hint bh-hint--keys">' + S.start_key.replace(/Espaço|Space|Espacio/, w.key) + '</p>' +
@@ -271,11 +238,12 @@
 
     var legend = el('p', 'bh-legend',
       '<kbd>&larr;</kbd><kbd>&rarr;</kbd> ' + S.move + ' &middot; <kbd>W</kbd><kbd>&uarr;</kbd> ' + S.shoot + ' &middot; <kbd>B</kbd> ' + S.bomb +
-      ' &middot; <kbd>P</kbd> ' + S.pause + ' &middot; <kbd>M</kbd> ' + S.sound + ' &middot; <kbd>Esc</kbd> ' + S.quit);
+      ' &middot; <kbd>P</kbd> ' + S.pause + ' &middot; <kbd>M</kbd> ' + S.sound);
 
     panel.appendChild(top);
     panel.appendChild(stage);
     panel.appendChild(legend);
+    root.innerHTML = '';
     root.appendChild(panel);
 
     stage.addEventListener('pointerdown', onPointer);
@@ -300,12 +268,24 @@
     pauseBtn.title = label + ' (P)';
   }
 
-  function bombReady() { return game && state === 'play' && game.lives >= 2 && game.bombCool <= 0 && game.introT <= 0; }
+  function late() { return game && game.sprint >= LATE_SPRINT; }
+
+  // A bomb uses a charge when there is one (late sprints); otherwise it costs a life, never the last one
+  function bombReady() { return game && state === 'play' && (game.bombs > 0 || game.lives >= 2) && game.bombCool <= 0 && game.introT <= 0; }
 
   function syncBombBtn() {
     if (!bombBtn || bombBtn.hidden) return;
     var ready = !!bombReady();
     if (bombBtn._ready !== ready) { bombBtn._ready = ready; bombBtn.classList.toggle('is-off', !ready); }
+    var charges = game ? game.bombs : 0;
+    if (bombBtn._charges !== charges) {
+      bombBtn._charges = charges;
+      bombBtn.classList.toggle('is-charged', charges > 0);
+      bombBtn.querySelector('.bh-bomb__cost').innerHTML = charges > 0 ? '&times;' + charges : '&minus;1<span class="bh-life"></span>';
+      var label = charges > 0 ? fmt(S.bomb_button_free, charges) : S.bomb_button;
+      bombBtn.setAttribute('aria-label', label);
+      bombBtn.title = label + ' (B)';
+    }
   }
 
   function showScreen(name) {
@@ -432,7 +412,7 @@
   /* ---------- Game state ---------- */
 
   function newGame() {
-    game = { score: 0, sprint: 1, lives: 3, killed: 0, best: readBest(), nextLife: EXTRA_LIFE_EVERY, msg: '', msgT: 0, texts: [], power: 0, bombCool: 0, flash: 0 };
+    game = { score: 0, sprint: 1, lives: 3, killed: 0, best: readBest(), nextLife: EXTRA_LIFE_EVERY, msg: '', msgT: 0, texts: [], power: 0, bombCool: 0, flash: 0, bombs: 0 };
     game.player = { x: W / 2, y: H - 34, w: 34, h: 36, inv: 0, cool: 0 };
     placeShields(true);
     newSprint();
@@ -463,6 +443,14 @@
     game.msg = fmt(S.sprint_start, game.sprint);
     game.msgT = 1.3;
     if (game.sprint > 1 && game.sprint % 3 === 1) placeShields(true);  // fresh firewalls every 3 sprints
+    if (game.sprint === LATE_SPRINT) {
+      // the late game: strong shot from now on, plus a first bomb charge
+      game.bombs = Math.max(game.bombs, 1);
+      // shown in the empty strip just above the firewalls, standing still so it never covers the bugs
+      var ty = game.player.y - 140;
+      floatText(W / 2, ty, S.late_unlock, '#d98a3a', 2.8, 0);
+      floatText(W / 2, ty + 24, S.late_bombs, '#d98a3a', 2.8, 0);
+    }
     layoutBugs();
   }
 
@@ -489,7 +477,7 @@
     renderHud();
   }
 
-  function floatText(x, y, text, color) { game.texts.push({ x: x, y: y, text: text, color: color, t: 1.2 }); }
+  function floatText(x, y, text, color, t, vy) { game.texts.push({ x: x, y: y, text: text, color: color, t: t || 1.2, vy: vy == null ? 30 : vy }); }
 
   function startGame() {
     unlockAudio();
@@ -498,6 +486,7 @@
     state = 'play';
     showScreen(null);
     panel.focus({ preventScroll: true });
+    if (root.getBoundingClientRect().top < -40) root.scrollIntoView({ block: 'end', behavior: 'smooth' });
     sfx.sprint();
     loop.last = 0;
     if (!running) { running = true; raf = requestAnimationFrame(loop); }
@@ -564,7 +553,7 @@
     if (p.inv > 0) p.inv -= dt;
 
     // Floating texts, particles and banner always animate
-    game.texts.forEach(function (t) { t.y -= 30 * dt; t.t -= dt; });
+    game.texts.forEach(function (t) { t.y -= t.vy * dt; t.t -= dt; });
     game.texts = game.texts.filter(function (t) { return t.t > 0; });
     game.parts.forEach(function (q) { q.x += q.vx * dt; q.y += q.vy * dt; q.vy += 260 * dt; q.life -= dt; });
     game.parts = game.parts.filter(function (q) { return q.life > 0; });
@@ -580,7 +569,7 @@
     // Shooting: up to MAX_SHOTS on screen. On touch screens it fires non-stop, so the only thing to do is move.
     // While the coffee boost lasts: big shots, more of them, they pierce bugs and ignore firewalls/enemy fire.
     p.cool -= dt;
-    var big = game.power > 0;
+    var big = game.power > 0 || late();
     if ((keys.fire || isTouch) && p.cool <= 0 && game.shots.length < (big ? MAX_SHOTS + 3 : MAX_SHOTS)) {
       game.shots.push({ x: p.x, y: p.y - p.h / 2, v: big ? 720 : 600, big: big, hits: 0 });
       p.cool = big ? SHOT_COOLDOWN * 0.6 : SHOT_COOLDOWN;
@@ -655,30 +644,38 @@
       if (game.ufo.x < -40 || game.ufo.x > W + 40) { game.ufo = null; game.ufoTimer = 15 + Math.random() * 12; }
     }
 
-    // Collisions: player shot vs bugs and hotfix
+    // Collisions: player shot vs bugs and hotfix. The whole path covered this frame counts,
+    // so a fast shot on a slow frame can't skip over a bug.
+    function crossed(s, y, r) { return y > s.y - r && y < s.py + r; }
     game.shots.forEach(function (s) {
-      if (game.ufo && Math.abs(s.x - game.ufo.x) < 18 && Math.abs(s.y - game.ufo.y) < 14) {
+      if (game.ufo && Math.abs(s.x - game.ufo.x) < 18 && crossed(s, game.ufo.y, 14)) {
         var bonus = [50, 100, 150, 300][Math.floor(Math.random() * 4)];
         floatText(game.ufo.x, game.ufo.y + 10, fmt(S.hotfix, bonus), '#d98a3a');
         burst(game.ufo.x, game.ufo.y, '#d98a3a', 16);
         game.ufo = null; game.ufoTimer = 15 + Math.random() * 12; s.y = -100;
         sfx.hotfix();
-        sfx.power();
-        game.power = POWER_TIME;
-        game.msg = S.power_up; game.msgT = 1.4;
         buzz(40);
+        if (late()) {
+          // the shot is already strong, so late in the game the coffee is worth a life
+          if (game.lives < MAX_LIVES) { game.lives++; sfx.life(); game.msg = S.extra_life; game.msgT = 1.4; }
+        } else {
+          sfx.power();
+          game.power = POWER_TIME;
+          game.msg = S.power_up; game.msgT = 1.4;
+        }
         addScore(bonus);
         return;
       }
       for (var i = 0; i < alive.length; i++) {
         var b = alive[i];
-        if (b.alive && Math.abs(s.x - b.x) < (s.big ? 24 : 16) && Math.abs(s.y - b.y) < 14) {
+        if (b.alive && Math.abs(s.x - b.x) < (s.big ? 24 : 16) && crossed(s, b.y, 14)) {
           b.alive = false;
           if (!s.big || ++s.hits >= 3) s.y = -100;   // a boosted shot goes through up to 3 bugs
           game.killed++;
           burst(b.x, b.y, ROW_COLORS[b.row % ROW_COLORS.length], 12);
           sfx.hit();
           addScore(KIND_PTS[b.kind]);
+          if (late()) rowCleared(b);
           break;
         }
       }
@@ -713,19 +710,29 @@
     }
   }
 
-  // Bomb: trade a life for some breathing room. Wipes the two lowest rows of bugs and all enemy fire,
+  // Late sprints: shooting down the last bug of a row recharges a bomb (rows wiped by a bomb don't count)
+  function rowCleared(b) {
+    for (var i = 0; i < game.bugs.length; i++) if (game.bugs[i].alive && game.bugs[i].row === b.row) return;
+    if (game.bombs >= MAX_BOMBS) return;
+    game.bombs++;
+    floatText(b.x, b.y, S.bomb_charged, '#f2a541');
+    sfx.charge();
+    syncBombBtn();
+  }
+
+  // Bomb: trade a life (or, late in the game, a charge) for some breathing room. Wipes the two lowest rows of bugs and all enemy fire,
   // pushes the swarm back up a row and gives a moment of invulnerability. Never spends the last life.
   function dropBomb() {
     if (!game || state !== 'play' || game.introT > 0) return;
     if (!bombReady()) {
       sfx.nope();
-      if (game.lives < 2) floatText(game.player.x, game.player.y - 44, S.bomb_need, '#e8618c');
+      if (!game.bombs && game.lives < 2) floatText(game.player.x, game.player.y - 44, late() ? S.bomb_empty : S.bomb_need, '#e8618c');
       return;
     }
     var p = game.player, alive = aliveBugs();
     var maxY = -Infinity;
     alive.forEach(function (b) { maxY = Math.max(maxY, b.y); });
-    game.lives--;
+    if (game.bombs > 0) game.bombs--; else game.lives--;
     game.bombCool = BOMB_COOLDOWN;
     alive.forEach(function (b) {
       if (b.y < maxY - SPY * 1.5) return;
@@ -925,7 +932,9 @@
 
   // Keys are matched by physical position (e.code) too, so A/D/W/S/B work on any layout
   function onKey(e, down) {
-    if (!root || root.hidden) return;
+    if (!root || state === 'closed') return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (document.body.classList.contains('menu-open')) return;   // the site menu is open on top of the game
     var k = e.key, c = e.code;
     if (k === 'ArrowLeft' || c === 'KeyA') { keys.left = down; if (down) keys.last = 'left'; e.preventDefault(); }
     else if (k === 'ArrowRight' || c === 'KeyD') { keys.right = down; if (down) keys.last = 'right'; e.preventDefault(); }
@@ -943,7 +952,7 @@
     else if (down && c === 'KeyB') { e.preventDefault(); if (!e.repeat) dropBomb(); }
     else if (down && c === 'KeyP') { e.preventDefault(); setPaused(state === 'play'); }
     else if (down && c === 'KeyM') { e.preventDefault(); toggleSound(); }
-    else if (down && k === 'Escape') { e.preventDefault(); e.stopPropagation(); closeGame(); }
+    else if (down && k === 'Escape' && state === 'play') { e.preventDefault(); setPaused(true); }
     else if (k === 'ArrowDown') { e.preventDefault(); }
   }
   // If the window loses focus mid-press the key-up never arrives; forget everything so no key stays stuck
@@ -990,25 +999,25 @@
 
   function onVisibility() { if (document.hidden && state === 'play') setPaused(true); }
 
-  /* ---------- Open / close ---------- */
+  /* ---------- Mount ---------- */
 
-  function openGame(options) {
+  function mount(el, options) {
+    root = el;
     opts = options;
     S = options.strings;
-    if (!root) {
-      build();
-      document.body.appendChild(root);
-    }
-    lastFocus = document.activeElement;
-    root.hidden = false;
-    document.documentElement.classList.add('bh-open');
+    build();
     window.addEventListener('keydown', onKeyDown, true);
     window.addEventListener('keyup', onKeyUp, true);
     window.addEventListener('blur', clearKeys);
     window.addEventListener('resize', resize);
     document.addEventListener('visibilitychange', onVisibility);
+    // scrolled away from the game (to the footer, say): pause it
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (en) {
+        if (!en[0].isIntersecting && state === 'play') setPaused(true);
+      }, { threshold: 0.5 }).observe(root);
+    }
     if (window.matchMedia && matchMedia('(hover: none) and (pointer: coarse)').matches) setTouch();
-    syncThemeBtn();
     syncSoundBtn();
     state = 'start';
     game = null;
@@ -1022,23 +1031,15 @@
     raf = requestAnimationFrame(loop);
   }
 
-  function closeGame() {
-    if (!root) return;
-    running = false;
-    cancelAnimationFrame(raf);
-    keys = {}; touchActive = false; drag = null; touchX = null;
-    state = 'closed';
-    syncUfoSound();
-    if (audio && audio.state === 'running') audio.suspend();
-    root.hidden = true;
-    document.documentElement.classList.remove('bh-open');
-    window.removeEventListener('keydown', onKeyDown, true);
-    window.removeEventListener('keyup', onKeyUp, true);
-    window.removeEventListener('blur', clearKeys);
-    window.removeEventListener('resize', resize);
-    document.removeEventListener('visibilitychange', onVisibility);
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  function init() {
+    var el = document.querySelector('.bughunt');
+    if (!el || root) return;
+    mount(el, {
+      strings: JSON.parse(el.getAttribute('data-game')),
+      whatsapp: el.getAttribute('data-whatsapp'),
+      cv: el.getAttribute('data-cv')
+    });
   }
-
-  window.BugHunt = { open: openGame, close: closeGame };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();

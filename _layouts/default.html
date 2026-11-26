@@ -95,7 +95,7 @@
             <li><a href="{{ t.prefix }}/" class="{% if section == 'work' %}is-active{% endif %}">{{ t.nav_work }}</a></li>
             <li><a href="{{ t.prefix }}/about/" class="{% if section == 'about' %}is-active{% endif %}">{{ t.nav_about }}</a></li>
             <li><a href="{{ t.prefix }}/blog/" class="{% if section == 'blog' %}is-active{% endif %}">{{ t.nav_blog }}</a></li>
-            <li><button type="button" class="main-menu__game" data-open-game aria-haspopup="dialog">{{ g.launcher_label }}</button></li>
+            <li><a href="{{ g.page_url }}" class="main-menu__game{% if section == 'games' %} is-active{% endif %}">{{ g.launcher_label }}</a></li>
           </ul>
 
 
@@ -114,8 +114,9 @@
       {{ content }}
     </main>
 
+    {%- unless section == 'games' %}
     {% include whatsapp.html %}
-    {% include game.html %}
+    {%- endunless %}
 
     <footer class="footer">
       <div class="footer-container">
@@ -195,28 +196,6 @@
         Array.prototype.forEach.call(document.querySelectorAll('[data-set-lang]'), function (a) {
           a.addEventListener('click', function () { try { localStorage.setItem('lang', a.getAttribute('data-set-lang')); } catch (e) {} });
         });
-
-        // Bug Hunt: load the game only when someone asks to play
-        var gameCfg = document.querySelector('.bughunt-config');
-        if (gameCfg) {
-          Array.prototype.forEach.call(document.querySelectorAll('[data-open-game]'), function (b) {
-            b.addEventListener('click', function () { setMenu(false); openGame(); });
-          });
-        }
-        function openGame() {
-          var open = function () {
-            window.BugHunt.open({
-              strings: JSON.parse(gameCfg.getAttribute('data-game')),
-              whatsapp: gameCfg.getAttribute('data-whatsapp'),
-              cv: gameCfg.getAttribute('data-cv')
-            });
-          };
-          if (window.BugHunt) return open();
-          var sc = document.createElement('script');
-          sc.src = gameCfg.getAttribute('data-src');
-          sc.onload = open;
-          document.body.appendChild(sc);
-        }
 
         function onScroll() {
           header.classList.toggle('is-scrolled', window.scrollY > 10);

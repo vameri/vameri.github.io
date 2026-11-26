@@ -207,8 +207,7 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
 }
 
 .main-menu a:hover { color: var(--accent); }
-.main-menu__game { padding: 0; border: 0; background: none; cursor: pointer; }
-.main-menu__game:hover { color: #e8618c; }
+.main-menu .main-menu__game:hover { color: #e8618c; }
 .main-menu a.is-active { color: var(--ink); }
 
 .menu .social { display: none; }
@@ -799,11 +798,8 @@ article.list p { margin: 0; }
 .hero__links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; font-weight: 700; }
 .hero__links a { text-decoration: none; border-bottom: 2px solid var(--heading); padding-bottom: 2px; }
 .hero__links a:hover { border-color: var(--accent); }
-.hero__game {
-  padding: 0 0 2px; border: 0; border-bottom: 2px dashed #e8618c; background: none;
-  color: var(--heading); font: inherit; font-weight: 700; cursor: pointer;
-}
-.hero__game:hover { color: #e8618c; }
+.hero__links .hero__game { border-bottom: 2px dashed #e8618c; }
+.hero__links .hero__game:hover { color: #e8618c; border-color: #e8618c; }
 @media (max-width: 767px) {
   .hero { padding: 10px 0 36px; }
   .hero__title { font-size: 28px; }
@@ -910,21 +906,14 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
 /* ==========================================================
    Bug Hunt mini game
    ========================================================== */
-.bh-open .wa-float { opacity: 0; pointer-events: none; }
-
-/* Overlay: the site stays visible behind a translucent, blurred layer */
-.bh-open, .bh-open body { overflow: hidden; }
-.bh-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  padding: 0;
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
-  -webkit-backdrop-filter: blur(6px) saturate(1.1);
-  backdrop-filter: blur(6px) saturate(1.1);
+/* Its own page: the game fills the screen below the header; the footer sits under it */
+.bh-page { height: calc(100vh - var(--header-h) - 40px); height: calc(100svh - var(--header-h) - 40px); min-height: 420px; padding-bottom: 16px; }
+.bughunt { height: 100%; }
+.bh-noscript { margin: 0; padding: 40px 0; color: var(--soft); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-.bh-overlay[hidden] { display: none; }
 
 .bh-panel {
   position: relative;
@@ -932,9 +921,6 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
   flex-direction: column;
   width: 100%;
   height: 100%;
-  height: 100dvh;
-  padding: 16px 24px 12px;
-  background: color-mix(in srgb, var(--surface) 55%, transparent);
   outline: none;
 }
 .bh-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex: none; }
@@ -981,6 +967,7 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
 .bh-big { margin: 0; font-size: 20px; font-weight: 700; color: var(--heading); }
 .bh-new { color: #e8618c; }
 .bh-touch { margin: 0; font-size: 14px; color: var(--soft); }
+.bh-late { color: #d98a3a; font-weight: 600; }
 .bh-hint { margin: 0; font-size: 13px; color: var(--soft); }
 .bh-hint--touch { display: none; }
 .is-touch .bh-hint--touch { display: block; }
@@ -1029,7 +1016,7 @@ kbd.bh-wide { min-width: 64px; }
 .bh-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 
 @media (max-width: 767px) {
-  .bh-panel { padding: 10px 10px 8px; }
+  .bh-page { height: calc(100vh - var(--header-h) - 28px); height: calc(100svh - var(--header-h) - 28px); min-height: 400px; padding-bottom: 8px; }
   .bh-title { font-size: 26px; }
   .bh-keys { display: none; }
   .bh-hud { font-size: 12px; gap: 4px 12px; }
@@ -1067,6 +1054,7 @@ kbd.bh-wide { min-width: 64px; }
   background: #e8618c; color: #fff;
   font: 700 11px/1.4 var(--font);
 }
+.bh-bomb.is-charged .bh-bomb__cost { background: #f2a541; color: #232323; }
 .bh-bomb__cost .bh-life { border-left-width: 4px; border-right-width: 4px; border-bottom-width: 7px; }
 .is-touch .bh-bomb { width: 60px; height: 60px; }
 .is-touch .bh-bomb svg { width: 26px; height: 26px; }
