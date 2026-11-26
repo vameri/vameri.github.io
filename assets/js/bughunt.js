@@ -19,6 +19,9 @@
   var S, opts, root, panel, canvas, ctx, hud, screens, lastFocus, themeBtn;
   var raf = 0, running = false, state = 'start';
   var keys = {}, touchActive = false, touchX = null, isTouch = false;
+  var drag = null;                            // { id, x0, p0, k }: finger drag, relative to where it started
+  var DRAG_GAIN = 1.35;                       // finger travel -> pizza travel (no need to cross the whole screen)
+  var pauseBtn;
   var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var stars = [];
   var game;
@@ -203,9 +206,13 @@
     close.setAttribute('aria-label', S.close);
     close.title = S.close;
     close.addEventListener('click', closeGame);
+    pauseBtn = el('button', 'bh-close bh-pause');
+    pauseBtn.type = 'button';
+    pauseBtn.addEventListener('click', function () { setPaused(state === 'play'); });
     soundBtn = el('button', 'bh-close bh-sound');
     soundBtn.type = 'button';
     soundBtn.addEventListener('click', function () { toggleSound(); panel.focus({ preventScroll: true }); });
+    tools.appendChild(pauseBtn);
     tools.appendChild(soundBtn);
     tools.appendChild(themeBtn);
     tools.appendChild(close);
@@ -237,6 +244,7 @@
       var act = e.target.closest && e.target.closest('[data-act]');
       if (!act) return;
       var a = act.getAttribute('data-act');
+      if (a === 'again' && performance.now() - (game.overAt || 0) < 700) return;  // ignore a stray tap right after dying
       if (a === 'start' || a === 'again') startGame();
       if (a === 'resume') setPaused(false);
     });
@@ -252,12 +260,26 @@
 
     stage.addEventListener('pointerdown', onPointer);
     stage.addEventListener('pointermove', onPointer);
-    window.addEventListener('pointerup', function () { touchActive = false; });
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
 
     ctx = canvas.getContext('2d');
   }
 
+  var PAUSE_ICON = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+  var PLAY_ICON = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>';
+
+  function syncPauseBtn() {
+    if (!pauseBtn) return;
+    pauseBtn.hidden = state !== 'play' && state !== 'paused';
+    var label = state === 'paused' ? S.resume : S.pause_button;
+    pauseBtn.innerHTML = state === 'paused' ? PLAY_ICON : PAUSE_ICON;
+    pauseBtn.setAttribute('aria-label', label);
+    pauseBtn.title = label + ' (P)';
+  }
+
   function showScreen(name) {
+    syncPauseBtn();
     Object.keys(screens).forEach(function (k) { screens[k].hidden = k !== name; });
     var btn = name && screens[name] && screens[name].querySelector('.bh-btn');
     if (btn) btn.focus({ preventScroll: true });
@@ -284,10 +306,14 @@
     var maxW = stage.clientWidth;
     var maxH = stage.clientHeight;
     if (maxW < 50 || maxH < 50) return;
-    W = Math.round(Math.max(360, Math.min(1000, H * maxW / maxH)));
+    // Portrait phones: keep the width and stretch the field down to use the whole screen
+    var ratio = maxW / maxH;
+    if (ratio < 360 / 520) { W = 360; H = Math.round(Math.min(700, 360 / ratio)); }
+    else { H = 520; W = Math.round(Math.max(360, Math.min(1000, H * ratio))); }
     configure();
     if (game && game.player) {
       game.player.x = Math.max(24, Math.min(W - 24, game.player.x));
+      game.player.y = H - 34;
       placeShields(false);
     }
     var scale = Math.min(maxW / W, maxH / H);
@@ -384,6 +410,8 @@
   function newSprint() {
     var p = game.player;
     p.x = W / 2; p.inv = 0; p.cool = 0;
+    touchX = null;
+    if (drag) { drag.x0 = drag.lx; drag.p0 = p.x; }          // finger still down: re-anchor to the recentred pizza
     game.shots = [];
     game.enemyShots = [];
     game.parts = [];
@@ -393,7 +421,7 @@
     }
     game.spx = SPX;
     game.fx = (W - (COLS - 1) * SPX) / 2;
-    game.fy = 52 + Math.min(game.sprint - 1, 6) * 14;   // each sprint starts a bit lower
+    game.fy = 52 + (H - 520) * 0.4 + Math.min(game.sprint - 1, 6) * 14;   // each sprint starts a bit lower; taller (portrait) fields start lower
     game.dir = 1;
     game.step = 0; game.frame = 0;
     game.enemyTimer = 1.4;
@@ -454,6 +482,8 @@
 
   function gameOver() {
     state = 'over';
+    game.overAt = performance.now();
+    buzz([80, 60, 160]);
     syncUfoSound();
     sfx.over();
     var isBest = game.score > game.best && game.score > 0;
@@ -493,10 +523,10 @@
     var dx = 0;
     if (keys.left) dx -= 1;
     if (keys.right) dx += 1;
-    if (dx) p.x += dx * speed * dt;
-    else if (touchActive && touchX != null) {
+    if (dx) { p.x += dx * speed * dt; touchX = null; }
+    else if (touchX != null) {
       var diff = touchX - p.x;
-      p.x += Math.max(-speed * dt * 1.4, Math.min(speed * dt * 1.4, diff));
+      p.x += Math.max(-speed * dt * 4, Math.min(speed * dt * 4, diff));
     }
     p.x = Math.max(p.w / 2 + 6, Math.min(W - p.w / 2 - 6, p.x));
     if (p.inv > 0) p.inv -= dt;
@@ -511,9 +541,10 @@
     // Short pause at the start of each sprint
     if (game.introT > 0) { game.introT -= dt; return; }
 
-    // Shooting (one player shot on screen at a time, like the arcade classics)
+    // Shooting (one player shot on screen at a time, like the arcade classics).
+    // On touch screens it fires non-stop, so the only thing to do is move.
     p.cool -= dt;
-    if ((keys.fire || (isTouch && touchActive)) && p.cool <= 0 && game.shots.length < 1) {
+    if ((keys.fire || isTouch) && p.cool <= 0 && game.shots.length < 1) {
       game.shots.push({ x: p.x, y: p.y - p.h / 2, v: 600 });
       p.cool = 0.22;
       sfx.shoot();
@@ -521,7 +552,8 @@
     game.shots.forEach(function (s) { s.py = s.y; s.y -= s.v * dt; });
     game.shots = game.shots.filter(function (s) {
       if (s.y < -10) return false;
-      if (hitShield(s.x, s.py, s.y)) { sfx.block(); return false; }
+      // with auto-fire, own shots pass through the firewalls instead of wearing them down
+      if (!isTouch && hitShield(s.x, s.py, s.y)) { sfx.block(); return false; }
       return true;
     });
 
@@ -614,6 +646,7 @@
           p.inv = 1.6;
           burst(p.x, p.y, '#f6c453', 18);
           sfx.playerHit();
+          buzz(90);
           renderHud();
           if (game.lives <= 0) { gameOver(); return; }
           break;
@@ -803,19 +836,41 @@
   function onKeyDown(e) { onKey(e, true); }
   function onKeyUp(e) { onKey(e, false); }
 
+  function setTouch() {
+    isTouch = true;
+    panel.classList.add('is-touch');
+  }
+
+  function buzz(pattern) {
+    if (!isTouch || muted || !navigator.vibrate) return;
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+
+  // Touch: drag anywhere on the stage. The pizza follows the finger's movement
+  // (not its position), so the finger never covers it.
   function onPointer(e) {
     if (e.pointerType === 'mouse') return;
     if (e.target.closest && e.target.closest('button, a')) return;
-    isTouch = true;
-    panel.classList.add('is-touch');
+    setTouch();
     if (e.type === 'pointerdown') {
+      if (state === 'start') startGame();
+      if (state !== 'play' || drag) return;
+      var r = canvas.getBoundingClientRect();
+      drag = { id: e.pointerId, x0: e.clientX, lx: e.clientX, p0: game.player.x, k: W / r.width * DRAG_GAIN };
       touchActive = true;
-      if (state === 'start' || state === 'over') { startGame(); }
+      e.preventDefault();
+      return;
     }
-    if (!touchActive) return;
-    var r = canvas.getBoundingClientRect();
-    touchX = (e.clientX - r.left) / r.width * W;
+    if (!drag || e.pointerId !== drag.id) return;
+    drag.lx = e.clientX;
+    touchX = Math.max(0, Math.min(W, drag.p0 + (e.clientX - drag.x0) * drag.k));
+    // re-anchor at the edges so dragging back responds immediately
+    if (touchX === 0 || touchX === W) { drag.x0 = e.clientX; drag.p0 = touchX; }
     e.preventDefault();
+  }
+
+  function endDrag(e) {
+    if (drag && (!e || e.pointerId === drag.id)) { drag = null; touchActive = false; }
   }
 
   function onVisibility() { if (document.hidden && state === 'play') setPaused(true); }
@@ -836,6 +891,7 @@
     window.addEventListener('keyup', onKeyUp, true);
     window.addEventListener('resize', resize);
     document.addEventListener('visibilitychange', onVisibility);
+    if (window.matchMedia && matchMedia('(hover: none) and (pointer: coarse)').matches) setTouch();
     syncThemeBtn();
     syncSoundBtn();
     state = 'start';
@@ -854,7 +910,7 @@
     if (!root) return;
     running = false;
     cancelAnimationFrame(raf);
-    keys = {}; touchActive = false;
+    keys = {}; touchActive = false; drag = null; touchX = null;
     state = 'closed';
     syncUfoSound();
     if (audio && audio.state === 'running') audio.suspend();

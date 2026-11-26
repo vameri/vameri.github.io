@@ -791,6 +791,11 @@ article.list p { margin: 0; }
 .hero__links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; font-weight: 700; }
 .hero__links a { text-decoration: none; border-bottom: 2px solid var(--heading); padding-bottom: 2px; }
 .hero__links a:hover { border-color: var(--accent); }
+.hero__game {
+  padding: 0 0 2px; border: 0; border-bottom: 2px dashed #e8618c; background: none;
+  color: var(--heading); font: inherit; font-weight: 700; cursor: pointer;
+}
+.hero__game:hover { color: #e8618c; }
 @media (max-width: 767px) {
   .hero { padding: 10px 0 36px; }
   .hero__title { font-size: 28px; }
@@ -892,11 +897,13 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wa-float__btn, .wa-float__tip { transition: none; }
+  .game-launcher, .game-launcher__btn, .game-launcher__label { transition: none; }
 }
 
 /* ==========================================================
    Bug Hunt mini game
    ========================================================== */
+/* Floating launcher: a yellow round button that opens into a "Play" pill on hover/focus */
 .game-launcher {
   position: fixed;
   left: 24px;
@@ -904,12 +911,16 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
   z-index: 8;
   display: flex;
   align-items: center;
-  gap: 10px;
+  height: 48px;
   padding: 0;
   border: 0;
-  background: none;
+  border-radius: 100px;
+  background: #f6c453;
+  color: #232323;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .16);
   cursor: pointer;
   font: inherit;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 .game-launcher__btn {
   display: inline-flex;
@@ -917,39 +928,36 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--heading);
-  box-shadow: 0 0 0 1px var(--line-strong), 0 6px 18px rgba(0, 0, 0, .12);
-  opacity: .9;
-  transition: opacity .2s ease, transform .2s ease, color .2s ease;
+  flex: none;
+  transition: transform .2s ease;
 }
-.game-launcher__tip {
-  padding: 7px 14px;
-  border-radius: 100px;
-  background: var(--surface);
-  color: var(--heading);
+.game-launcher__label {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 0 0 1px var(--line-strong), 0 6px 18px rgba(0, 0, 0, .1);
+  grid-template-columns: 0fr;
+  padding-right: 0;
   opacity: 0;
-  transform: translateX(-8px);
-  pointer-events: none;
-  transition: opacity .2s ease, transform .2s ease;
+  transition: grid-template-columns .3s ease, padding .3s ease, opacity .2s ease;
 }
+.game-launcher__label > span { min-width: 0; }
+.game-launcher:hover,
+.game-launcher:focus-visible { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, .2); }
 .game-launcher:hover .game-launcher__btn,
-.game-launcher:focus-visible .game-launcher__btn { opacity: 1; transform: translateY(-2px) rotate(-8deg); color: var(--accent); }
-.game-launcher:hover .game-launcher__tip,
-.game-launcher:focus-visible .game-launcher__tip { opacity: 1; transform: translateX(0); }
-.game-launcher:focus-visible { outline: none; }
-.game-launcher:focus-visible .game-launcher__btn { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent); }
+.game-launcher:focus-visible .game-launcher__btn { transform: rotate(-10deg); }
+.game-launcher:hover .game-launcher__label,
+.game-launcher:focus-visible .game-launcher__label { grid-template-columns: 1fr; padding-right: 18px; opacity: 1; }
+.game-launcher:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent); }
 body.menu-open .game-launcher,
 .bh-open .game-launcher,
 .bh-open .wa-float { opacity: 0; pointer-events: none; }
 @media (max-width: 767px) {
-  .game-launcher { left: 16px; bottom: calc(16px + var(--float-lift, 0px)); }
+  .game-launcher { left: 16px; bottom: calc(16px + var(--float-lift, 0px)); height: 44px; }
   .game-launcher__btn { width: 44px; height: 44px; }
+  .game-launcher__label { font-size: 13px; }
 }
 
 /* Overlay: the site stays visible behind a translucent, blurred layer */
@@ -993,7 +1001,7 @@ body.menu-open .game-launcher,
 }
 .bh-close:hover { background: var(--chip-bg); }
 
-.bh-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; touch-action: none; user-select: none; -webkit-user-select: none; }
+.bh-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
 .bh-stage > .bh-screen { left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -50%); width: var(--bh-w, 100%); height: var(--bh-h, 100%); }
 .bh-canvas {
   display: block;
@@ -1080,3 +1088,9 @@ kbd.bh-wide { min-width: 64px; }
   .bh-hint--touch { display: block; }
 }
 .bh-tools { display: flex; gap: 8px; flex: none; }
+.bh-close[hidden] { display: none; }
+@media (max-width: 420px) {
+  .bh-best { display: none; }
+  .bh-tools { gap: 6px; }
+  .bh-close { width: 38px; height: 38px; }
+}

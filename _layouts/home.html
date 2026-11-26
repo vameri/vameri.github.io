@@ -5,6 +5,7 @@ section: work
 {%- assign base_items = site.work | where: "lang", "pt" | sort: "order" -%}
 {%- assign local_items = site.work | where: "lang", page.lang -%}
 {%- assign t = site.data.i18n[page.lang] -%}
+{%- assign g = site.data.game[page.lang] | default: site.data.game.pt -%}
 <section class="hero">
   <h1 class="hero__title">{{ t.hero_title }}</h1>
   <p class="hero__text">{{ t.hero_text }}</p>
@@ -12,6 +13,7 @@ section: work
     <a href="{{ t.prefix }}/about/">{{ t.hero_about }} &rarr;</a>
     <a href="/CV_Vagner_Ribas.pdf" download>{{ t.download_cv }}</a>
     <a href="https://www.linkedin.com/in/vagneribas/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <button type="button" class="hero__game" data-open-game aria-haspopup="dialog">{{ g.hero_link }}</button>
   </p>
 </section>
 

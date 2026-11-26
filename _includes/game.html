@@ -2,7 +2,7 @@
 {%- assign g = site.data.game[lang] | default: site.data.game.pt -%}
 {%- assign t = site.data.i18n[lang] -%}
 {%- capture wa_url -%}https://wa.me/{{ site.data.seo.whatsapp }}?text={{ t.whatsapp_message | uri_escape }}{%- endcapture -%}
-<button class="game-launcher" type="button" aria-label="{{ g.title }}: {{ g.launcher }}" aria-haspopup="dialog"
+<button class="game-launcher" type="button" aria-label="{{ g.title }}: {{ g.launcher_label }}" aria-haspopup="dialog"
         data-game='{{ g | jsonify | replace: "'", "&#39;" }}' data-whatsapp="{{ wa_url }}" data-cv="/CV_Vagner_Ribas.pdf"
         data-src="/assets/js/bughunt.js?v={{ site.time | date: '%s' }}">
   <span class="game-launcher__btn" aria-hidden="true">
@@ -12,5 +12,5 @@
       <circle cx="15.6" cy="10.8" r=".6" fill="currentColor"/><circle cx="17.4" cy="12.8" r=".6" fill="currentColor"/>
     </svg>
   </span>
-  <span class="game-launcher__tip" aria-hidden="true">{{ g.launcher }}</span>
+  <span class="game-launcher__label" aria-hidden="true"><span>{{ g.launcher_label }}</span></span>
 </button>

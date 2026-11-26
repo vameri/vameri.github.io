@@ -147,20 +147,24 @@
         // Bug Hunt: load the game only when someone asks to play
         var gameBtn = document.querySelector('.game-launcher');
         if (gameBtn) {
-          gameBtn.addEventListener('click', function () {
-            var open = function () {
-              window.BugHunt.open({
-                strings: JSON.parse(gameBtn.getAttribute('data-game')),
-                whatsapp: gameBtn.getAttribute('data-whatsapp'),
-                cv: gameBtn.getAttribute('data-cv')
-              });
-            };
-            if (window.BugHunt) return open();
-            var sc = document.createElement('script');
-            sc.src = gameBtn.getAttribute('data-src');
-            sc.onload = open;
-            document.body.appendChild(sc);
+          gameBtn.addEventListener('click', openGame);
+          Array.prototype.forEach.call(document.querySelectorAll('[data-open-game]'), function (b) {
+            b.addEventListener('click', openGame);
           });
+        }
+        function openGame() {
+          var open = function () {
+            window.BugHunt.open({
+              strings: JSON.parse(gameBtn.getAttribute('data-game')),
+              whatsapp: gameBtn.getAttribute('data-whatsapp'),
+              cv: gameBtn.getAttribute('data-cv')
+            });
+          };
+          if (window.BugHunt) return open();
+          var sc = document.createElement('script');
+          sc.src = gameBtn.getAttribute('data-src');
+          sc.onload = open;
+          document.body.appendChild(sc);
         }
 
         function onScroll() {
