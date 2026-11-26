@@ -1,5 +1,6 @@
 {%- assign lang = page.lang | default: site.default_lang -%}
 {%- assign t = site.data.i18n[lang] -%}
+{%- assign g = site.data.game[lang] | default: site.data.game.pt -%}
 {%- assign section = page.section | default: "" -%}
 {%- if page.ref -%}{%- assign translations = site.pages | concat: site.work | where: "ref", page.ref -%}{%- endif -%}
 <!doctype html>
@@ -51,6 +52,7 @@
             <li><a href="{{ t.prefix }}/" class="{% if section == 'work' %}is-active{% endif %}">{{ t.nav_work }}</a></li>
             <li><a href="{{ t.prefix }}/about/" class="{% if section == 'about' %}is-active{% endif %}">{{ t.nav_about }}</a></li>
             <li><a href="{{ t.prefix }}/blog/" class="{% if section == 'blog' %}is-active{% endif %}">{{ t.nav_blog }}</a></li>
+            <li><button type="button" class="main-menu__game" data-open-game aria-haspopup="dialog">{{ g.launcher_label }}</button></li>
           </ul>
 
           <ul class="lang-switch" aria-label="{{ t.language }}">
@@ -145,24 +147,23 @@
         }
 
         // Bug Hunt: load the game only when someone asks to play
-        var gameBtn = document.querySelector('.game-launcher');
-        if (gameBtn) {
-          gameBtn.addEventListener('click', openGame);
+        var gameCfg = document.querySelector('.bughunt-config');
+        if (gameCfg) {
           Array.prototype.forEach.call(document.querySelectorAll('[data-open-game]'), function (b) {
-            b.addEventListener('click', openGame);
+            b.addEventListener('click', function () { setMenu(false); openGame(); });
           });
         }
         function openGame() {
           var open = function () {
             window.BugHunt.open({
-              strings: JSON.parse(gameBtn.getAttribute('data-game')),
-              whatsapp: gameBtn.getAttribute('data-whatsapp'),
-              cv: gameBtn.getAttribute('data-cv')
+              strings: JSON.parse(gameCfg.getAttribute('data-game')),
+              whatsapp: gameCfg.getAttribute('data-whatsapp'),
+              cv: gameCfg.getAttribute('data-cv')
             });
           };
           if (window.BugHunt) return open();
           var sc = document.createElement('script');
-          sc.src = gameBtn.getAttribute('data-src');
+          sc.src = gameCfg.getAttribute('data-src');
           sc.onload = open;
           document.body.appendChild(sc);
         }

@@ -87,6 +87,7 @@ h1, h2, h3, h4, h5, h6 {
 h1, h2,
 .logo,
 .main-menu a,
+.main-menu__game,
 .page-intro,
 .hero__title,
 .project-header h1,
@@ -195,7 +196,8 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
   list-style: none;
 }
 
-.main-menu a {
+.main-menu a,
+.main-menu__game {
   color: var(--muted);
   font-size: 18px;
   font-weight: 900;
@@ -205,6 +207,8 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
 }
 
 .main-menu a:hover { color: var(--accent); }
+.main-menu__game { padding: 0; border: 0; background: none; cursor: pointer; }
+.main-menu__game:hover { color: #e8618c; }
 .main-menu a.is-active { color: var(--ink); }
 
 .menu .social { display: none; }
@@ -278,7 +282,8 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--lin
     gap: 30px;
   }
 
-  .main-menu a { font-size: 30px; line-height: 1.5; }
+  .main-menu a,
+  .main-menu__game { font-size: 30px; line-height: 1.5; }
 
   .menu .social { display: flex; justify-content: flex-end; }
   .menu { align-items: stretch; gap: 0; }
@@ -897,68 +902,12 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wa-float__btn, .wa-float__tip { transition: none; }
-  .game-launcher, .game-launcher__btn, .game-launcher__label { transition: none; }
 }
 
 /* ==========================================================
    Bug Hunt mini game
    ========================================================== */
-/* Floating launcher: a yellow round button that opens into a "Play" pill on hover/focus */
-.game-launcher {
-  position: fixed;
-  left: 24px;
-  bottom: calc(24px + var(--float-lift, 0px));
-  z-index: 8;
-  display: flex;
-  align-items: center;
-  height: 48px;
-  padding: 0;
-  border: 0;
-  border-radius: 100px;
-  background: #f6c453;
-  color: #232323;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .16);
-  cursor: pointer;
-  font: inherit;
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.game-launcher__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  flex: none;
-  transition: transform .2s ease;
-}
-.game-launcher__label {
-  display: grid;
-  grid-template-columns: 1fr;
-  overflow: hidden;
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-  grid-template-columns: 0fr;
-  padding-right: 0;
-  opacity: 0;
-  transition: grid-template-columns .3s ease, padding .3s ease, opacity .2s ease;
-}
-.game-launcher__label > span { min-width: 0; }
-.game-launcher:hover,
-.game-launcher:focus-visible { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, .2); }
-.game-launcher:hover .game-launcher__btn,
-.game-launcher:focus-visible .game-launcher__btn { transform: rotate(-10deg); }
-.game-launcher:hover .game-launcher__label,
-.game-launcher:focus-visible .game-launcher__label { grid-template-columns: 1fr; padding-right: 18px; opacity: 1; }
-.game-launcher:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent); }
-body.menu-open .game-launcher,
-.bh-open .game-launcher,
 .bh-open .wa-float { opacity: 0; pointer-events: none; }
-@media (max-width: 767px) {
-  .game-launcher { left: 16px; bottom: calc(16px + var(--float-lift, 0px)); height: 44px; }
-  .game-launcher__btn { width: 44px; height: 44px; }
-  .game-launcher__label { font-size: 13px; }
-}
 
 /* Overlay: the site stays visible behind a translucent, blurred layer */
 .bh-open, .bh-open body { overflow: hidden; }

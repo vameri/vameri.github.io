@@ -2,7 +2,7 @@
  * Bug Hunt: a small original arcade game for vameri.github.io.
  * Waves of bugs march across the screen; the player (a pizza slice) shoots them,
  * hides behind firewalls and hits the occasional coffee "hotfix" for bonus points.
- * Vanilla JS + <canvas>, no dependencies. Loaded on demand by the launcher button.
+ * Vanilla JS + <canvas>, no dependencies. Loaded on demand from the menu or the home hero link.
  */
 (function () {
   'use strict';
@@ -14,6 +14,8 @@
   var ROW_COLORS = ['#e8618c', '#9b6bdf', '#5b8def', '#3fb37f', '#f2a541'];
   var CELL = 4, SH_COLS = 14, SH_ROWS = 10;   // firewall grid
   var EXTRA_LIFE_EVERY = 1500, MAX_LIVES = 5;
+  var MAX_SHOTS = 3, SHOT_COOLDOWN = 0.16;     // player shots on screen at once / time between shots
+  var TOUCH_PACE = 0.75;                      // touch screens: bugs and their fire run slower
   var BEST_KEY = 'bughuntBest';
 
   var S, opts, root, panel, canvas, ctx, hud, screens, lastFocus, themeBtn;
@@ -541,12 +543,11 @@
     // Short pause at the start of each sprint
     if (game.introT > 0) { game.introT -= dt; return; }
 
-    // Shooting (one player shot on screen at a time, like the arcade classics).
-    // On touch screens it fires non-stop, so the only thing to do is move.
+    // Shooting: up to MAX_SHOTS on screen. On touch screens it fires non-stop, so the only thing to do is move.
     p.cool -= dt;
-    if ((keys.fire || isTouch) && p.cool <= 0 && game.shots.length < 1) {
+    if ((keys.fire || isTouch) && p.cool <= 0 && game.shots.length < MAX_SHOTS) {
       game.shots.push({ x: p.x, y: p.y - p.h / 2, v: 600 });
-      p.cool = 0.22;
+      p.cool = SHOT_COOLDOWN;
       sfx.shoot();
     }
     game.shots.forEach(function (s) { s.py = s.y; s.y -= s.v * dt; });
@@ -560,7 +561,9 @@
     // Formation movement: faster each sprint and as fewer bugs remain
     var alive = aliveBugs();
     var ratio = 1 - alive.length / game.total;
-    var bugSpeed = (26 + game.sprint * 7) * (1 + ratio * 3);
+    // Narrow fields bounce (and so descend) more often, so the march slows down with the width; touch is slower still
+    var pace = isTouch ? TOUCH_PACE : 1;
+    var bugSpeed = (26 + game.sprint * 7) * (1 + ratio * 3) * pace * Math.min(1, 0.4 + 0.6 * W / 600);
     game.fx += game.dir * bugSpeed * dt;
     layoutBugs();
     var minX = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -585,8 +588,8 @@
       // half the time, aim at the column above the player
       var sh = shooters[Math.floor(Math.random() * shooters.length)];
       if (Math.random() < 0.5) shooters.forEach(function (b) { if (Math.abs(b.x - p.x) < Math.abs(sh.x - p.x)) sh = b; });
-      game.enemyShots.push({ x: sh.x, y: sh.y + 14, py: sh.y + 14, v: 170 + game.sprint * 16, t: 0 });
-      game.enemyTimer = Math.max(0.28, 1.25 - game.sprint * 0.1 - ratio * 0.45) * (0.6 + Math.random() * 0.8);
+      game.enemyShots.push({ x: sh.x, y: sh.y + 14, py: sh.y + 14, v: (170 + game.sprint * 16) * pace, t: 0 });
+      game.enemyTimer = Math.max(0.28, 1.25 - game.sprint * 0.1 - ratio * 0.45) * (0.6 + Math.random() * 0.8) / pace;
     }
     game.enemyShots.forEach(function (s) { s.py = s.y; s.y += s.v * dt; s.t += dt; });
     game.enemyShots = game.enemyShots.filter(function (s) {
